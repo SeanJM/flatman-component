@@ -1,15 +1,17 @@
 Component.prototype.enable = function () {
   var i = 0;
+  var n = this.dict.elements.length;
+  var elements = this.dict.elements;
+  var disabledElements = this.dict.disabledElements;
 
-  var n = this.elements
-    ? this.elements.length
-    : 0;
+  this.dict.isDisabled = false;
 
   for (; i < n; i++) {
-    this.elements[i].enable();
+    if (disabledElements.indexOf(elements[i]) === -1) {
+      elements[i].enable();
+    }
   }
 
   this.node.document.enable();
-
   return this;
 };

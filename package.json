@@ -5,7 +5,7 @@
   "author": "Sean MacIsaac <seanjmacisaac@gmail.com> (http://twitter.com/seanjmacisaac)",
   "gruntBuild": {
     "isBundle": true,
-    "isProduction": true,
+    "isProduction": false,
     "sourceMap": false,
     "isSite": false,
     "useClosure": true,

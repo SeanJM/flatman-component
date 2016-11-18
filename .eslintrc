@@ -1,0 +1,18 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType" : "module",
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true,
+      "arrowFunctions": true,
+      "classes": true,
+      "restParams": true,
+      "spread": true
+    }
+  },
+
+  "rules": {
+    "object-curly-spacing" : ["error", "always"],
+    "semi" : 2
+  }
+}

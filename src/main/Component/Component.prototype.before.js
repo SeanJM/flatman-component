@@ -1,4 +1,4 @@
-Component.prototype.append = function (a) {
+Component.prototype.before = function (a) {
   var target = Component.prototype.target.call(this, this.node.document);
-  target.append(a);
+  target.before(a);
 };

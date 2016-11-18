@@ -1,5 +1,5 @@
 Component.prototype.on = function (name, callback) {
-  var names = _.filter(name.split(','), function (a) {
+  var names = name.split(',').filter(function (a) {
     return a.length;
   });
   var i = 0;

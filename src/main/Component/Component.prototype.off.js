@@ -1,26 +1,30 @@
 Component.prototype.off = function (name, callback) {
-  var names = name.split(',').filter(function (a) {
-    return a.length;
-  });
+  var self = this;
 
-  var i = 0;
-  var n = names.length;
-  var indexOf;
-  var x;
-
-  for (; i < n; i++) {
-    x = names[i].trim();
-
-    if (typeof this.subscribers[x] === 'undefined') {
-      throw 'There are no subscribers for \'' + x + '\'';
-    }
-
-    indexOf = this.subscribers[x].indexOf(callback);
-
-    if (indexOf !== -1) {
-      this.subscribers[x].slice(indexOf, 1);
-    }
+  if (typeof this.subscribers === 'undefined') {
+    this.subscribers = {};
   }
+
+  name.split(',').forEach(function (a) {
+    var i;
+
+    a = a.trim();
+
+    if (typeof self.subscribers[a] !== 'undefined') {
+      i = self.subscribers[a].indexOf(callback);
+
+      while (i !== -1) {
+        self.subscribers[a].splice(i, 1);
+        i = self.subscribers[a].indexOf(callback);
+      }
+
+      if (typeof callback === 'undefined') {
+        while (self.subscribers[a].length) {
+          self.subscribers[a].shift();
+        }
+      }
+    }
+  });
 
   return this;
 };
