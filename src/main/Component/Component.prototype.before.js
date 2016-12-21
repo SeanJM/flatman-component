@@ -1,4 +1,7 @@
-Component.prototype.before = function (a) {
-  var target = Component.prototype.target.call(this, this.node.document);
-  target.before(a);
+Component.prototype.before = function (target) {
+  if (typeof target === 'undefined') {
+    return this.node.document.before();
+  }
+  this.node.document.before(target);
+  return this;
 };
