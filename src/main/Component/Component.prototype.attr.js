@@ -3,4 +3,5 @@ Component.prototype.attr = function (property, value) {
     return this.node.document.attr(property);
   }
   this.node.document.attr(property, value);
+  return this;
 };
