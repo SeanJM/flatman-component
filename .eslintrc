@@ -12,7 +12,11 @@
   },
 
   "rules": {
-    "object-curly-spacing" : ["error", "always"],
-    "semi" : 2
+    "generator-star-spacing": [2, "before"], // enforce the spacing around the * in generator functions (off by default)
+    "keyword-spacing": ["error", { "before" : true, "after" : true }], // require a space after return, throw, and case
+    "no-extra-semi" : ["error"],
+    "no-unused-vars" : ["error"],
+    "semi" : ["error"],
+    "space-infix-ops": ["error", { "int32Hint" : true }], // require spaces around operators
   }
 }
