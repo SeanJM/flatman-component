@@ -1,26 +1,25 @@
 Component.prototype.on = function (name, callback) {
-  var names = name.split(',').filter(function (a) {
-    return a.length;
-  });
-  var i = 0;
-  var n = names.length;
-  var x;
+  var self = this;
 
   if (typeof this.subscribers === 'undefined') {
     this.subscribers = {};
   }
 
-  for (; i < n; i++) {
-    x = names[i].trim();
+  name
+    .toLowerCase()
+    .split(',')
+    .forEach(function (a) {
+      a = a.trim();
+      if (a.length) {
+        if (typeof self.subscribers[a] === 'undefined') {
+          self.subscribers[a] = [];
+        }
 
-    if (typeof this.subscribers[x] === 'undefined') {
-      this.subscribers[x] = [];
-    }
-
-    if (this.subscribers[x].indexOf(callback) === -1) {
-      this.subscribers[x].push(callback);
-    }
-  }
+        if (self.subscribers[a].indexOf(callback) === -1) {
+          self.subscribers[a].push(callback);
+        }
+      }
+    });
 
   return this;
 };
