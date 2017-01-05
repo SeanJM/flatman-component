@@ -1,12 +1,18 @@
-Component.prototype.trigger = function (name, e) {
-  var names = _.filter(name.split(','), function (a) {
-    return a.length;
-  });
-  var i = 0;
-  var n = names.length;
-  var index;
-  var x;
-  var j;
+Component.prototype.trigger = function () {
+  var self = this;
+  var isNameString = typeof arguments[0] === 'string';
+
+  var name = isNameString
+    ? arguments[0].toLowerCase()
+    : arguments[0].type.toLowerCase();
+
+  var e = isNameString
+    ? arguments[1]
+    : arguments[0];
+
+  var names = name.split(',')
+    .map(function (a) { return a.trim(); })
+    .filter(function (a) { return a.length && self.subscribers && self.subscribers[a]; });
 
   if (typeof e === 'undefined') {
     e = {
@@ -27,15 +33,11 @@ Component.prototype.trigger = function (name, e) {
     this.subscribers = {};
   }
 
-  for (; i < n; i++) {
-    x = names[i].trim();
-
-    if (typeof this.subscribers[x] === 'object') {
-      for (j = this.subscribers[x].length - 1; j >= 0; j--) {
-        this.subscribers[x][j].call(this, e);
-      }
-    }
-  }
+  names.forEach(function (name) {
+    self.subscribers[name].slice().forEach(function (callback) {
+      callback.call(self, e);
+    });
+  });
 
   return this;
 };
