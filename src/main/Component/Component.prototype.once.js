@@ -1,10 +1,10 @@
 Component.prototype.once = function (names, callback) {
   var self = this;
 
-  var ref = function (e) {
+  function ref(e) {
     callback.call(self, e);
     self.off(names, ref);
-  };
+  }
 
   this.on(names, ref);
 
