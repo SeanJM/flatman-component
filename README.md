@@ -14,16 +14,14 @@
 
 ## Description ([top](#table-of-contents))
 
-<!--
-  Describe to the world what you toiled over. You magnificent being.
-  (The title 'Is going to be generated')
--->
+A Component function to work with createNode.
 ## Example ([top](#table-of-contents))
 
+It must be initialized to add a facade to what ever constructor you are using.
 
-<!--
-  An brief example which showcases your plugin
--->
+```javascript
+Component.facade([ Array of Methods ]);
+```
 ## Installation ([top](#table-of-contents))
 
 

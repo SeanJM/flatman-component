@@ -1,4 +1,5 @@
+It must be initialized to add a facade to what ever constructor you are using.
 
-<!--
-  An brief example which showcases your plugin
--->
+```javascript
+Component.facade([ Array of Methods ]);
+```
