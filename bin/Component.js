@@ -130,29 +130,6 @@ function Component() {
     document : el('div')
   };
 }
-
-(function () {
-  var prototype;
-  var methods = [];
-  var flatman = require && require('flatman');
-
-  if (flatman) {
-    prototype = flatman.el.constructor.prototype;
-    methods = Object.getOwnPropertyNames();
-  } else {
-    prototype = el('div').constructor.prototype;
-    for (var k in prototype) {
-      methods.push(k);
-    }
-  }
-
-  methods.forEach(function (method) {
-    if (!Component.prototype[method]) {
-      Component.prototype[method] = facade.component(method);
-    }
-  });
-}());
-
 Component.create = function (name, methods) {
   var FN = function () {};
 
@@ -200,6 +177,18 @@ Component.extend = function () {
 
   for (; i < n; i++) {
     each(arguments[i]);
+  }
+};
+
+Component.facade = function (methods) {
+  if (Array.isArray(methods)) {
+    methods.forEach(function (method) {
+      if (!Component.prototype[method]) {
+        Component.prototype[method] = facade.component(method);
+      }
+    });
+  } else {
+    throw 'Invalid argument for Component.facade. The argument must be an array of methods.';
   }
 };
 

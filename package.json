@@ -11,7 +11,7 @@
     "useClosure": true,
     "bundle": "Component"
   },
-  "main": "bin/Component.min.js",
+  "main": "bin/Component.js",
   "scripts": {
     "test": "test/index.js"
   },
