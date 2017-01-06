@@ -1,17 +1,4 @@
 (function () {
-var IS_NODE_JS = (
-  typeof module !== 'undefined'
-  && typeof require === 'function'
-);
-
-var el = IS_NODE_JS
-  ? require('flatman').el
-  : window.el;
-
-var _ = IS_NODE_JS
-  ? require('lodash')
-  : window._;
-
 function column(start, end) {
   var padding = 5;
   var b = padding / 2;
@@ -107,10 +94,14 @@ function getName(element) {
   return element.dict && element.dict.name || element.name && element.name();
 }
 function getNode(element) {
-  var str = element.node.toString();
+  var target = element.node
+    ? element.node
+    : element;
+
+  var str = target.toString();
 
   if (str.substr(1, 6) === 'object' && str.substr(-8, 7) === 'Element') {
-    return element.node;
+    return target;
   }
 
   return getNode(element.node.document);
@@ -126,9 +117,7 @@ function triggerMount(p) {
 }
 
 function Component() {
-  this.node = {
-    document : el('div')
-  };
+  this.init();
 }
 Component.create = function (name, methods) {
   var FN = function () {};
@@ -219,7 +208,7 @@ Component.prototype.append = function (children) {
 };
 
 Component.prototype.appendTo = function (target) {
-  target = el(target);
+  target = typeof el === 'function' ? el(target) : target;
   this.node.document.appendTo(target);
   this.parentNode = target;
   return this;
@@ -434,6 +423,11 @@ Component.prototype.prepend = function (children) {
   this.mapChildrenToNode(children);
   this.node.document.prepend(children);
   [].shift.apply(this.childNodes, children);
+
+  children.forEach(function (child) {
+    child.parentComponent = self;
+    self.childNodes.push(child);
+  });
 
   return this;
 };

@@ -1,8 +1,12 @@
 function getNode(element) {
-  var str = element.node.toString();
+  var target = element.node
+    ? element.node
+    : element;
+
+  var str = target.toString();
 
   if (str.substr(1, 6) === 'object' && str.substr(-8, 7) === 'Element') {
-    return element.node;
+    return target;
   }
 
   return getNode(element.node.document);

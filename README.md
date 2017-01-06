@@ -1,4 +1,4 @@
-# Sm Component 0.0.0
+# Flatman Component 0.0.0
 #### License: [MIT](https://opensource.org/licenses/MIT)
 
 #### 🐛 No unit tests
