@@ -66,18 +66,24 @@ function column(start, end) {
 var facade = {
   append : function (append) {
     return function (children) {
-      var parentNode = this;
+      var self = this;
 
       append.call(this, children);
 
       this.mapChildrenToNode(children);
-      [].push.apply(this.childNodes, children);
 
       children.forEach(function (child) {
-        child.parentNode = parentNode;
+        child.parentComponent = self;
+        self.childNodes.push(child);
       });
 
       return this;
+    };
+  },
+  remove : function (remove) {
+    return function () {
+      remove.call(this);
+      return Component.prototype.remove.call(this);
     };
   },
   component : function (method) {
@@ -87,7 +93,6 @@ var facade = {
       var $arguments = new Array(n);
       var root = this.node.document;
       var result;
-
 
       for (;i < n; i++) {
         $arguments[i] = arguments[i];
@@ -100,6 +105,15 @@ var facade = {
 };
 function getName(element) {
   return element.dict && element.dict.name || element.name && element.name();
+}
+function getNode(element) {
+  var str = element.node.toString();
+
+  if (str.substr(1, 6) === 'object' && str.substr(-8, 7) === 'Element') {
+    return element.node;
+  }
+
+  return getNode(element.node.document);
 }
 function triggerMount(p) {
   if (typeof p.trigger === 'function') {
@@ -118,13 +132,51 @@ function Component() {
 }
 
 (function () {
-  var prototype = el('div').constructor.prototype;
-  for (var method in prototype) {
+  var prototype;
+  var methods = [];
+  var flatman = require && require('flatman');
+
+  if (flatman) {
+    prototype = flatman.el.constructor.prototype;
+    methods = Object.getOwnPropertyNames();
+  } else {
+    prototype = el('div').constructor.prototype;
+    for (var k in prototype) {
+      methods.push(k);
+    }
+  }
+
+  methods.forEach(function (method) {
     if (!Component.prototype[method]) {
       Component.prototype[method] = facade.component(method);
     }
-  }
+  });
 }());
+
+Component.create = function (name, methods) {
+  var FN = function () {};
+
+  function wrapper(k) {
+    return function () {
+      var i = 0;
+      var n = arguments.length;
+      var $arguments = new Array(n);
+
+      for (;i < n; i++) {
+        $arguments[i] = arguments[i];
+      }
+
+      methods[k].apply(FN, $arguments);
+    };
+  }
+
+  for (var k in methods) {
+    FN.prototype[k] = wrapper(k);
+  }
+
+  FN.__name__ = name;
+  window[name] = FN;
+};
 
 Component.extend = function () {
   var i = 0;
@@ -134,6 +186,11 @@ Component.extend = function () {
     if (typeof a.prototype.append === 'function') {
       a.prototype.append = facade.append(a.prototype.append);
     }
+
+    if (typeof a.prototype.remove === 'function') {
+      a.prototype.remove = facade.remove(a.prototype.remove);
+    }
+
     for (var k in Component.prototype) {
       if (typeof a.prototype[k] === 'undefined') {
         a.prototype[k] = Component.prototype[k];
@@ -163,16 +220,17 @@ Component.prototype.append = function (children) {
 
   this.mapChildrenToNode(children);
   this.node.document.append(children);
-  [].push.apply(this.childNodes, children);
 
   children.forEach(function (child) {
-    child.parentNode = self;
+    child.parentComponent = self;
+    self.childNodes.push(child);
   });
 
   return this;
 };
 
 Component.prototype.appendTo = function (target) {
+  target = el(target);
   this.node.document.appendTo(target);
   this.parentNode = target;
   return this;
@@ -189,13 +247,13 @@ Component.prototype.before = function (target) {
 };
 
 Component.prototype.closest = function (constructor) {
-  var p = this.parentNode;
+  var p = this.parentComponent;
 
   while (p) {
     if (p instanceof constructor) {
       return p;
     }
-    p = p.parentNode;
+    p = p.parentComponent;
   }
 
   return false;
@@ -266,10 +324,21 @@ Component.prototype.enable = function () {
 Component.prototype.init = function (opt) {
   this.node = {};
   this.childNodes = [];
-  this.dict = Object.assign({
+
+  this.dict = {
     disabledElements : [],
     isDisabled : false
-  }, opt);
+  };
+
+  for (var k in opt) {
+    if (k.substr(0, 4) === 'once') {
+      this.once(k.substr(4), opt[k]);
+    } else if (k.substr(0, 2) === 'on') {
+      this.on(k.substr(2), opt[k]);
+    } else {
+      this.dict[k] = opt[k];
+    }
+  }
 };
 
 Component.prototype.mapChildrenToNode = function (children) {
@@ -376,6 +445,23 @@ Component.prototype.prepend = function (children) {
   this.mapChildrenToNode(children);
   this.node.document.prepend(children);
   [].shift.apply(this.childNodes, children);
+
+  return this;
+};
+
+Component.prototype.remove = function () {
+  var node = getNode(this.node.document);
+  var parentNode = getNode(this.parentNode);
+  var parentComponent = this.parentComponent;
+
+  var index = this.parentNode.childNodes.indexOf(this);
+  parentNode.removeChild(node);
+  this.parentNode.childNodes.splice(index, 1);
+
+  if (parentComponent) {
+    index = parentComponent.childNodes.indexOf(this);
+    parentComponent.childNodes.splice(index, 1);
+  }
 
   return this;
 };
