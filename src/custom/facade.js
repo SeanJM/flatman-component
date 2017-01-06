@@ -1,18 +1,24 @@
 var facade = {
   append : function (append) {
     return function (children) {
-      var parentNode = this;
+      var self = this;
 
       append.call(this, children);
 
       this.mapChildrenToNode(children);
-      [].push.apply(this.childNodes, children);
 
       children.forEach(function (child) {
-        child.parentNode = parentNode;
+        child.parentComponent = self;
+        self.childNodes.push(child);
       });
 
       return this;
+    };
+  },
+  remove : function (remove) {
+    return function () {
+      remove.call(this);
+      return Component.prototype.remove.call(this);
     };
   },
   component : function (method) {
@@ -22,7 +28,6 @@ var facade = {
       var $arguments = new Array(n);
       var root = this.node.document;
       var result;
-
 
       for (;i < n; i++) {
         $arguments[i] = arguments[i];
