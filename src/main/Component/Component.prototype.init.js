@@ -16,4 +16,6 @@ Component.prototype.init = function (opt) {
       this.dict[k] = opt[k];
     }
   }
+
+  Component.extend(this.constructor);
 };
