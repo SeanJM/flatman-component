@@ -1,7 +1,7 @@
-# Flatman Component 0.6.0
+# Flatman Component 0.7.0
 #### License: [MIT](https://opensource.org/licenses/MIT)
 
-#### ✅ All 2 tests pass
+#### ✅ All 4 tests pass
 
 ## Table of Contents
 
@@ -68,4 +68,6 @@ Component.create('name', {
 ```
    1. Create component................................................... ✅
    2. Count children..................................................... ✅
+   3. Parent Component................................................... ✅
+   4. Parent Node........................................................ ✅
 ```
