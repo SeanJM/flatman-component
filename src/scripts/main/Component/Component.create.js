@@ -1,24 +1,57 @@
 Component.create = function (name, methods) {
-  var FN = function () {};
+  var methodList = [];
+  var C = function () {};
+
+  function Constructor(fn) {
+    return function (opt) {
+      fn.apply(this, opt);
+    };
+  }
 
   function wrapper(k) {
     return function () {
       var i = 0;
       var n = arguments.length;
       var $arguments = new Array(n);
+      var result;
 
       for (;i < n; i++) {
         $arguments[i] = arguments[i];
       }
 
-      methods[k].apply(FN, $arguments);
+      result = methods[k].apply(this, $arguments);
+
+      return typeof result === 'undefined'
+        ? this
+        : result;
     };
   }
 
   for (var k in methods) {
-    FN.prototype[k] = wrapper(k);
+    if (methods.hasOwnProperty(k)) {
+      methodList.push(k);
+      if (k === 'constructor') {
+        C = Constructor(methods[k]);
+      }
+    }
   }
 
-  FN.__name__ = name;
-  window[name] = FN;
+  for (method in methods) {
+    if (method === 'append') {
+      C.prototype.append = facade.append(methods[method]);
+    } else if (method === 'remove') {
+      C.prototype.remove = facade.remove(methods[method]);
+    } else if (method !== 'constructor') {
+      C.prototype[method] = wrapper(method);
+    }
+  }
+
+  for (var method in Component.prototype) {
+    if (typeof C.prototype[method] === 'undefined') {
+      C.prototype[method] = Component.prototype[method];
+    }
+  }
+
+  C.__name__ = name;
+  Component.lib[name] = C;
 };
