@@ -1,6 +1,6 @@
 Component.prototype.init = function (opt) {
-  this.node = {};
-  this.childNodes = [];
+  this.node = this.node || {};
+  this.childNodes = this.childNodes || [];
 
   this.dict = {
     disabledElements : [],
@@ -16,6 +16,4 @@ Component.prototype.init = function (opt) {
       this.dict[k] = opt[k];
     }
   }
-
-  Component.extend(this.constructor);
 };

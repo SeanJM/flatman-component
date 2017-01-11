@@ -1,3 +1,0 @@
-function Component() {
-  this.init();
-}
