@@ -3,14 +3,6 @@
   "version": "0.6.0",
   "license": "MIT",
   "author": "Sean MacIsaac <seanjmacisaac@gmail.com> (http://twitter.com/seanjmacisaac)",
-  "gruntBuild": {
-    "isBundle": true,
-    "isProduction": false,
-    "sourceMap": false,
-    "isSite": false,
-    "useClosure": true,
-    "bundle": "Component"
-  },
   "main": "bin/Component.js",
   "scripts": {
     "test": "test/index.js"
