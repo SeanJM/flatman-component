@@ -38,9 +38,15 @@ Another thing it does is normalize the `Component` so that it behaves like a `Do
 
 It must be initialized to add a facade to what ever constructor you are using.
 
+You don't need to include the function because the `facade` it creates will execute the methods on `this`.
+
 ```javascript
-Component.facade([ Array of Methods ]);
+const el = flatman.el;
+const proto = el('div').constructor.prototype;
+const methods = Object.keys(proto);
+Component.facade(methods);
 ```
+
 ## Installation
 ### Installation.md ([top](#table-of-contents))
 
