@@ -24,7 +24,8 @@
 ## Description.md
 ### Description.md ([top](#table-of-contents))
 
-A Component function to work with createNode.
+A Component function to work with `flatman-server` and `flatman`. Designed to act as a replacement for the node which `flatman-server` and `flatman` generate.
+
 ## Example.md
 ### Example.md ([top](#table-of-contents))
 
@@ -36,17 +37,13 @@ Component.facade([ Array of Methods ]);
 ## Installation.md
 ### Installation.md ([top](#table-of-contents))
 
+`npm i -S flatman-component`
 
-<!--
-  Installation instructions
--->
 ## Notes.md
 ### Notes.md ([top](#table-of-contents))
 
+This is a supporting library and is not intended to be used stand alone.
 
-<!--
-  Anything 'notable' that the user should know
--->
 ***
 
 ## Tests

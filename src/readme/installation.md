@@ -1,4 +1,1 @@
-
-<!--
-  Installation instructions
--->
+`npm i -S flatman-component`
