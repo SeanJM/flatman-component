@@ -1,46 +1,31 @@
 const TinyTest = require('../grunt/tinyTest');
-const fs = require('fs');
-const pkg = JSON.parse(fs.readFileSync('package.json'));
-const config = pkg.gruntBuild;
+const flatman = require('flatman-server');
+const el = flatman.el;
+const Component = flatman.Component;
 
 module.exports = new TinyTest(function (test) {
-  if (config.isProduction) {
-  } else {
+  class A {
+    append(children) {
+      this.node.test.append(children);
+    }
+    render() {
+      return el('div', [
+        el('div', {
+          name : 'test'
+        })
+      ]);
+    }
   }
 
-  // // Postive test
-  // test(
-  //   // Name of the test
-  // )
-  //   .this(
-  //     // value to test
-  //   )
-  //   .equal(
-  //     // Result
-  //   );
-  //
-  // // Negative test
-  // test(
-  //   // Name of the test
-  // )
-  //   .this(
-  //     // value to test
-  //   )
-  //   .notEqual(
-  //     // Result
-  //   );
-  //
-  // // Failure / catch test
-  // test(
-  //   // Name of the test
-  // )
-  //   .this(
-  //     // value to test
-  //   )
-  //   .fail(
-  //     // Result
-  //   );
-  //
-  // test.done();
+  Component.extend(A);
 
+  test('Count children')
+    .this(el(A).childNodes.length)
+    .equal(0);
+
+  test('Count children')
+    .this(el(A, [ el('div', { className : 'child' }) ]).childNodes.length)
+    .equal(1);
+
+  test.done();
 });
