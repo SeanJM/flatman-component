@@ -19,6 +19,9 @@
 
 - Notes
   - [Notes](#--notes-top)
+
+- Component.create
+  - [Component.create](#--component-create-top)
 - [Tests](#tests)
 
 ## Description
@@ -44,11 +47,25 @@ Component.facade([ Array of Methods ]);
 
 This is a supporting library and is not intended to be used stand alone.
 
+## Component.create
+### Component.create.md ([top](#table-of-contents))
+
+```javascript
+Component.create('name', {
+  constructor(props) {
+    // optional
+  }
+  render() {
+    return el('div');
+  }
+});
+```
+
 ***
 
 ## Tests
 
 ```
-   1. Count children..................................................... ✅
+   1. Create component................................................... ✅
    2. Count children..................................................... ✅
 ```
