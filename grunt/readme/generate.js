@@ -13,8 +13,9 @@ const smartCase = require(path.resolve('grunt/lib/smartCase'));
 const printTests = require('./printTests');
 const printTableOfContents = require('./printTableOfContents');
 const printContents = require('./printContents');
+const config = JSON.parse(fs.readFileSync('grunt.json'));
 
-const source = 'src/readme/';
+const source = path.join(config.src, 'readme');
 
 function generate(test_results, callback) {
   let content = {};
@@ -23,16 +24,15 @@ function generate(test_results, callback) {
 
   m(source, /\.md$/)
     .forEach(function (a) {
-      var p = a.substr(source.length).split(path.sep);
-      var s = p.slice(0, -1);
+      var p = a.substr(source.length).split(path.sep).filter(a => a.length);
 
-      if (s.length) {
-        if (typeof _.get(content, s) === 'undefined') {
-          _.set(content, s, []);
-        } else if (typeof _.get(content, s) === 'string') {
-          throw new Error('Invalid folder structure for "' + s.join(path.sep) + '"');
+      if (p.length) {
+        if (typeof _.get(content, p) === 'undefined') {
+          _.set(content, p, []);
+        } else if (typeof _.get(content, p) === 'string') {
+          throw new Error('Invalid folder structure for "' + p.join(path.sep) + '"');
         }
-        _.get(content, s).push(a);
+        _.get(content, p).push(a);
       } else {
         content[ p[0].replace(/\.md$/, '') ] = a;
       }

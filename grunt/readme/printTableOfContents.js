@@ -1,10 +1,12 @@
+const fs = require('fs');
 const path = require('path');
 const padLeft = require(path.resolve('grunt/lib/padLeft'));
 const padRight = require(path.resolve('grunt/lib/padRight'));
 const smartCase = require(path.resolve('grunt/lib/smartCase'));
+const config = JSON.parse(fs.readFileSync('grunt.json'));
 
 const _ = require('lodash');
-const source = 'src/readme/';
+const source = path.join(config.src, 'readme');
 
 function toLink(s) {
   var p = s.split('/');

@@ -1,19 +1,16 @@
+const path = require('path');
 const fs = require('fs');
-const config = JSON.parse(fs.readFileSync('package.json')).gruntBuild;
-
-const root = config.isSite
-  ? 'src/application/'
-  : 'src/';
+const config = JSON.parse(fs.readFileSync('grunt.json'));
 
 if (config.isSite) {
   try {
-    fs.statSync(root + 'styles');
+    fs.statSync(path.join(config.src, 'styles'));
   } catch (e) {
-    fs.mkdirSync(root + 'styles');
-    fs.mkdirSync(root + 'styles/constants');
-    fs.mkdirSync(root + 'styles/custom');
-    fs.mkdirSync(root + 'styles/functions');
-    fs.mkdirSync(root + 'styles/placeholders');
-    fs.mkdirSync(root + 'styles/vendor');
+    fs.mkdirSync(path.join(config.src, 'styles'));
+    fs.mkdirSync(path.join(config.src, 'styles/constants'));
+    fs.mkdirSync(path.join(config.src, 'styles/custom'));
+    fs.mkdirSync(path.join(config.src, 'styles/functions'));
+    fs.mkdirSync(path.join(config.src, 'styles/placeholders'));
+    fs.mkdirSync(path.join(config.src, 'styles/vendor'));
   }
 }

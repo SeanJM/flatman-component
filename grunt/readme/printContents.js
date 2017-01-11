@@ -3,9 +3,10 @@ const path = require('path');
 const padLeft = require(path.resolve('grunt/lib/padLeft'));
 const padRight = require(path.resolve('grunt/lib/padRight'));
 const smartCase = require(path.resolve('grunt/lib/smartCase'));
+const config = JSON.parse(fs.readFileSync('grunt.json'));
 
 const _ = require('lodash');
-const source = 'src/readme/';
+const source = path.join(config.src, 'readme');
 
 function printContents(text, content, i) {
   _.forEach(content, function (value, key) {
@@ -16,7 +17,7 @@ function printContents(text, content, i) {
     if (Array.isArray(value)) {
       value.forEach(function (a) {
         let string = fs.readFileSync(a, 'utf8');
-        var base = a.slice(source.length, -3).split(path.sep).map(smartCase).join(' / ');
+        var base = a.slice(source.length + 1).split(path.sep).map(smartCase).join(' / ');
         text.push(
           new Array(i + 3).join('#') + ' ' + base + ' \([top](#table-of-contents)\)',
           '',

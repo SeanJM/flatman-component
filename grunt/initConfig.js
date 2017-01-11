@@ -6,7 +6,7 @@ const css = require('./css');
 const images = require('./images');
 const fonts = require('./fonts');
 
-const config = JSON.parse(fs.readFileSync('package.json')).gruntBuild;
+const config = JSON.parse(fs.readFileSync('grunt.json'));
 
 module.exports = {
   copy : {
@@ -14,7 +14,7 @@ module.exports = {
       expand : true,
       flatten : true,
       src : fonts.files,
-      dest : 'bin/'
+      dest : config.dest
     },
     images : images.task.copy
   },
@@ -38,12 +38,12 @@ module.exports = {
     : Object.assign({
     // Flatman
     flatman : {
-      files : flatman.glob,
+      files : flatman.files,
       tasks : ['flatman']
     },
 
     readme : {
-      files : readme.glob,
+      files : readme.files,
       tasks : ['readme']
     },
 

@@ -1,0 +1,10 @@
+{
+  "src": "src/",
+  "dest": "bin/",
+  "isBundle": true,
+  "isProduction": true,
+  "sourceMap": false,
+  "isSite": false,
+  "useClosure": true,
+  "bundle": "Component.js"
+}

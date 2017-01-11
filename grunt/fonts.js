@@ -2,11 +2,12 @@ const fs = require('fs');
 const path = require('path');
 const m = require('match-file-utility');
 const _ = require('lodash');
+const config = JSON.parse(fs.readFileSync('grunt.json'));
 
-const files = m('src/application/fonts/', /(eot|svg|ttf|woff|woff2)$/);
+const files = m(path.join(config.src, 'application', 'fonts'), /(eot|svg|ttf|woff|woff2)$/);
 
 let dest = _(files)
-  .groupBy(a => 'bin/' + path.basename(a))
+  .groupBy(a => path.join(config.dest, path.basename(a)))
   .mapValues(a => a[0])
   .valueOf();
 

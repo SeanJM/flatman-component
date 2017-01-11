@@ -28,9 +28,6 @@ function TinyTest(callback) {
     return promise_test;
   }
 
-  test.done = function () {
-    test.ready();
-  };
 
   this.passed = {};
   this.failed = {};
@@ -46,8 +43,6 @@ function TinyTest(callback) {
   };
 
   setTimeout(function () {
-    callback(test);
-
     test.ready = function () {
       self.log('\n Loading tests (' + self.list_tests.length.toString().cyan + ')\n');
       Promise.all(self.list_tests.map(a => a.run())).then(
@@ -56,6 +51,12 @@ function TinyTest(callback) {
         }
       );
     };
+
+    test.done = function () {
+      test.ready();
+    };
+
+    callback(test);
   }, 20);
 }
 

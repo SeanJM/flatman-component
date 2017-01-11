@@ -1,7 +1,6 @@
 const path = require('path');
 const fs = require('fs');
-const pkg = JSON.parse(fs.readFileSync('package.json'));
-const config = pkg.gruntBuild;
+const config = JSON.parse(fs.readFileSync('grunt.json'));
 const generate = require('./generate');
 
 const exists = require('../lib/exists');
@@ -17,7 +16,7 @@ function task(callback) {
       tinyTest.then(function (test_results) {
         try {
           generate(test_results, callback);
-        } catch(e) {
+        } catch (e) {
           console.trace(e);
         }
       });
@@ -25,12 +24,12 @@ function task(callback) {
     } else {
       generate(undefined, callback);
     }
-  } catch(e) {
+  } catch (e) {
     console.trace(e);
   }
 }
 
 module.exports = {
-  glob : ['src/readme/**/*.md'],
+  files : [ path.join(config.src, 'readme', '**', '*.md') ],
   task : task
 };

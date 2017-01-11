@@ -1,24 +1,16 @@
 const fs = require('fs');
-const config = JSON.parse(fs.readFileSync('package.json')).gruntBuild;
+const config = JSON.parse(fs.readFileSync('grunt.json'));
 
 try {
   fs.statSync('src/');
-} catch(e) {
+} catch (e) {
   fs.mkdirSync('src/');
   require('./media');
 }
 
-if (config.isSite) {
-  try {
-    fs.statSync('src/application/');
-  } catch(e) {
-    fs.mkdirSync('src/application/');
-  }
-}
-
 require('./readme');
 require('./gitignore');
-require('./jshintrc');
+require('./eslintrc');
 require('./tests');
 require('./scripts');
 require('./styles');

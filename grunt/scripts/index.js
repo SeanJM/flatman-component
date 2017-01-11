@@ -1,16 +1,7 @@
 const fs = require('fs');
 const m = require('match-file-utility');
-const config = JSON.parse(fs.readFileSync('package.json')).gruntBuild;
-
-const files = config.isSite
-  ? require('./site_files')
-  : require('./plugin_files');
-
-const dest = files.dest[
-  config.isProduction
-    ? 'production'
-    : 'development'
-];
+const config = JSON.parse(fs.readFileSync('grunt.json'));
+const files = require('./files');
 
 let task = {
   concat : {},
@@ -26,7 +17,7 @@ task.uglify = {
   },
   files : {
     src : files.list,
-    dest : dest.bundle
+    dest : files.dest.bundle
   }
 };
 
@@ -36,7 +27,7 @@ if (config.isBundle) {
       sourceMap : config.sourceMap,
     },
     src : files.list,
-    dest : dest.bundle
+    dest : files.dest.bundle
   };
 
   task.watch.scripts = {
@@ -57,7 +48,7 @@ if (config.isBundle) {
           sourceMap : config.sourceMap,
         },
         src : files.src[k],
-        dest : dest[k]
+        dest : files.dest[k]
       };
 
       task.watch[k] = {
@@ -75,6 +66,6 @@ if (config.isBundle) {
 
 module.exports = {
   list : files.list,
-  dest : dest,
+  dest : files.dest,
   task : task
 };

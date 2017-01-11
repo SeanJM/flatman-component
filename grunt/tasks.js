@@ -3,7 +3,7 @@ const css = require('./css');
 const fonts = require('./fonts');
 const images = require('./images');
 const scripts = require('./scripts');
-const config = JSON.parse(fs.readFileSync('package.json')).gruntBuild;
+const config = JSON.parse(fs.readFileSync('grunt.json'));
 
 let tasks = [];
 
