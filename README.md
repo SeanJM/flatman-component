@@ -8,16 +8,16 @@
 #### Overview
 
 
-- Description.md
+- Description
   - [Description](#--description-top)
 
-- Example.md
+- Example
   - [Example](#--example-top)
 
-- Installation.md
+- Installation
   - [Installation](#--installation-top)
 
-- Notes.md
+- Notes
   - [Notes](#--notes-top)
 - [Tests](#tests)
 

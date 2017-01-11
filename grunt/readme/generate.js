@@ -6,9 +6,6 @@ const m = require('match-file-utility');
 const pkg = JSON.parse(fs.readFileSync('package.json'));
 
 const linkLicense = require('./linkLicense');
-const exists = require('../lib/exists');
-const padLeft = require(path.resolve('grunt/lib/padLeft'));
-const padRight = require(path.resolve('grunt/lib/padRight'));
 const smartCase = require(path.resolve('grunt/lib/smartCase'));
 const printTests = require('./printTests');
 const printTableOfContents = require('./printTableOfContents');
