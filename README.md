@@ -1,36 +1,57 @@
-# Flatman Component 0.0.0
+# Flatman Component 0.6.0
 #### License: [MIT](https://opensource.org/licenses/MIT)
 
-#### 🐛 No unit tests
+#### ✅ All 2 tests pass
 
 ## Table of Contents
 
 #### Overview
 
-- [Description](#description-md-top-top)
-- [Example](#example-md-top-top)
-- [Installation](#installation-md-top-top)
-- [Notes](#notes-md-top-top)
 
-## Description ([top](#table-of-contents))
+- Description.md
+  - [Description](#--description-top)
+
+- Example.md
+  - [Example](#--example-top)
+
+- Installation.md
+  - [Installation](#--installation-top)
+
+- Notes.md
+  - [Notes](#--notes-top)
+- [Tests](#tests)
+
+## Description.md
+### Description.md ([top](#table-of-contents))
 
 A Component function to work with createNode.
-## Example ([top](#table-of-contents))
+## Example.md
+### Example.md ([top](#table-of-contents))
 
 It must be initialized to add a facade to what ever constructor you are using.
 
 ```javascript
 Component.facade([ Array of Methods ]);
 ```
-## Installation ([top](#table-of-contents))
+## Installation.md
+### Installation.md ([top](#table-of-contents))
 
 
 <!--
   Installation instructions
 -->
-## Notes ([top](#table-of-contents))
+## Notes.md
+### Notes.md ([top](#table-of-contents))
 
 
 <!--
   Anything 'notable' that the user should know
 -->
+***
+
+## Tests
+
+```
+   1. Count children..................................................... ✅
+   2. Count children..................................................... ✅
+```
