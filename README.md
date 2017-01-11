@@ -21,12 +21,12 @@
   - [Notes](#--notes-top)
 - [Tests](#tests)
 
-## Description.md
+## Description
 ### Description.md ([top](#table-of-contents))
 
 A Component function to work with `flatman-server` and `flatman`. Designed to act as a replacement for the node which `flatman-server` and `flatman` generate.
 
-## Example.md
+## Example
 ### Example.md ([top](#table-of-contents))
 
 It must be initialized to add a facade to what ever constructor you are using.
@@ -34,12 +34,12 @@ It must be initialized to add a facade to what ever constructor you are using.
 ```javascript
 Component.facade([ Array of Methods ]);
 ```
-## Installation.md
+## Installation
 ### Installation.md ([top](#table-of-contents))
 
 `npm i -S flatman-component`
 
-## Notes.md
+## Notes
 ### Notes.md ([top](#table-of-contents))
 
 This is a supporting library and is not intended to be used stand alone.
