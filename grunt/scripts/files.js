@@ -35,8 +35,6 @@ if (config.bundle) {
   }
 }
 
-console.log(dest);
-
 module.exports = {
   src : src,
   dest : dest,
