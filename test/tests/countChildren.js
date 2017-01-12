@@ -26,12 +26,17 @@ let c = el('A');
 result.push(r.childNodes.length);
 
 r.append([c]);
-
 result.push(r.childNodes.length);
 
 c.remove();
-
 result.push(r.childNodes.length);
+
+r.append([c]);
+result.push(r.childNodes.length);
+
+r.removeChild(c);
+result.push(r.childNodes.length);
+
 
 module.exports = {
   name : 'Count children',
@@ -39,6 +44,6 @@ module.exports = {
     return result;
   },
   equal : function () {
-    return [ 0, 1, 0 ];
+    return [ 0, 1, 0, 1, 0 ];
   }
 };
