@@ -19,10 +19,19 @@ module.exports = {
   name : 'Disable',
   this : function () {
     let a = el('B');
+    let res = [];
+
     a.disable();
-    return [ a.attr('disabled'), a.node.anAwesomeName.attr('disabled') ];
+    res.push(a.attr('disabled'));
+    res.push(a.node.anAwesomeName.attr('disabled'));
+
+    a.enable();
+    res.push(a.attr('disabled'));
+    res.push(a.node.anAwesomeName.attr('disabled'));
+
+    return res;
   },
   equal : function () {
-    return [ 'disabled', 'disabled' ];
+    return [ 'disabled', 'disabled', null, null ];
   }
 };
