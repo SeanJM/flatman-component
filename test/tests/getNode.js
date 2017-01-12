@@ -9,8 +9,6 @@ const getNode = require(path.resolve('src/scripts/custom/getNode'));
 module.exports = {
   name : 'getNode()',
   this : function () {
-    Component.lib = {};
-
     Component.create('A', {
       constructor() {
         this.test = 'test';
@@ -20,9 +18,15 @@ module.exports = {
       }
     });
 
-    return [ getNode(el('A')), getNode(node) ];
+    Component.create('B', {
+      render() {
+        return el('A');
+      }
+    });
+
+    return [ getNode(el('A')), getNode(node), getNode(el('B')) ];
   },
   equal : function () {
-    return [ node, node ];
+    return [ node, node, node ];
   }
 };
