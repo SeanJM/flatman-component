@@ -13,7 +13,7 @@ module.exports = new TinyTest(function (test) {
     if (opts.equal) {
       t.equal(opts.equal());
     } else if (opts.notEqual) {
-      t.notEqual(opts.equal());
+      t.notEqual(opts.notEqual());
     } else if (opts.fail) {
       t.fail(opts.fail());
     }
