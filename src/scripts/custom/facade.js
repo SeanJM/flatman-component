@@ -34,7 +34,7 @@ var facade = {
       }
 
       result = root[method].apply(root, $arguments);
-      return typeof result === 'undefined' || result == null ? this : result;
+      return typeof result === 'undefined' ? this : result;
     };
   }
 };
