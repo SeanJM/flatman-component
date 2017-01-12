@@ -1,9 +1,12 @@
 Component.prototype.after = function (target) {
+  var childNodes = this.parentComponent.childNodes;
+
   if (typeof target === 'undefined') {
-    return this.node.document.after();
+    return childNodes[childNodes.indexOf(target) + 1];
   }
+
   this.node.document.after(target);
-  this.parentNode = target.parentNode;
-  this.parentNode.childNodes.push(this);
+  childNodes.splice(childNodes.indexOf(this) + 1, 0, target);
+
   return this;
 };
