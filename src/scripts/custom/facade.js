@@ -21,6 +21,20 @@ var facade = {
       return Component.prototype.remove.call(this);
     };
   },
+  removeChild : function (removeChild) {
+    return function () {
+      var i = 0;
+      var n = arguments.length;
+      var $arguments = new Array(n);
+
+      for (; i < n; i++) {
+        $arguments[i] = arguments[i];
+      }
+
+      removeChild.apply(this, $arguments);
+      return Component.prototype.removeChild.apply(this, $arguments);
+    };
+  },
   component : function (method) {
     return function () {
       var i = 0;

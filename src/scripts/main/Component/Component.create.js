@@ -41,6 +41,8 @@ Component.create = function (name, methods) {
       C.prototype.append = facade.append(methods[method]);
     } else if (method === 'remove') {
       C.prototype.remove = facade.remove(methods[method]);
+    } else if (method === 'removeChild') {
+      C.prototype.removeChild = facade.removeChild(methods[method]);
     } else if (method !== 'constructor') {
       C.prototype[method] = wrapper(method);
     }
