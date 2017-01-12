@@ -1,5 +1,5 @@
 function getNode(element) {
-  var target = element.node
+  var target = element && element.node
     ? element.node
     : element;
 
@@ -11,3 +11,5 @@ function getNode(element) {
 
   return getNode(element.node.document);
 }
+
+if (typeof module === 'object') module.exports = getNode;
