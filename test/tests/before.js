@@ -3,7 +3,7 @@ const el = flatman.el;
 const Component = flatman.Component;
 
 module.exports = {
-  name : '.after()',
+  name : '.before()',
   this : function () {
     var result = [];
 
@@ -19,7 +19,7 @@ module.exports = {
     let d = el('A', { className : 'd' });
 
     a.append([b, c]);
-    b.after(d);
+    c.before(d);
 
     result.push(a.childNodes.indexOf(b));
     result.push(a.childNodes.indexOf(d));

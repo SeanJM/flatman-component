@@ -7,11 +7,8 @@ module.exports = {
   name : 'Parent Node',
   this : function () {
     Component.lib = {};
-    
+
     Component.create('A', {
-      constructor() {
-        this.test = 'test';
-      },
       render() {
         return el('div', [
           el('div', {
