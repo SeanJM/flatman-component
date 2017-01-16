@@ -9,13 +9,11 @@ function task(callback) {
   try {
 
     if (config.isProduction && exists('test/index.js')) {
-      let tinyTest = require(path.resolve('test/'));
+      let test = require('../../test/index.js');
 
-      tinyTest.silence();
-
-      tinyTest.then(function (test_results) {
+      test.then(function (results) {
         try {
-          generate(test_results, callback);
+          generate(results, callback);
         } catch (e) {
           console.trace(e);
         }

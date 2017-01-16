@@ -1,10 +1,10 @@
-const TinyTest = require('tiny-test');
+const tinyTest = require('tiny-test');
 const path = require('path');
 const m = require('match-file-utility');
 
 const tests = m('test/tests/', /\.js$/).map(a => require(path.resolve(a)));
 
-module.exports = new TinyTest(function (test, load) {
+module.exports = tinyTest(function (test, load) {
   tests.forEach(function (opts) {
     var t = test(opts.name);
 

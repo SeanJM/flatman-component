@@ -2,40 +2,26 @@ const path = require('path');
 const padLeft = require(path.resolve('grunt/lib/padLeft'));
 const padRight = require(path.resolve('grunt/lib/padRight'));
 
-module.exports = function (text, test_results) {
+module.exports = function (text, testResults) {
+  var total = testResults && testResults.tests.length;
+  var passed = testResults && testResults.tests.filter(a => a.passed);
+  var failed = testResults && testResults.tests.filter(a => !a.passed);
+
   text.push('***', '', '## Tests');
 
   text.push('', '```');
 
-  for (var k in test_results.passed) {
+  passed.forEach(function (a) {
     text.push(
-      padLeft(test_results.passed[k].index, 5, ' ') + '. ' + padRight(test_results.passed[k].name, 68, '.') + ' ✅'
+      padLeft(a.index, 5, ' ') + '. ' + padRight(a.name, 68, '.') + ' ✅'
     );
-  }
+  });
 
-  for (k in test_results.failed) {
+  failed.forEach(function (a) {
     text.push(
-      '\n' + padLeft(test_results.failed[k].index, 5, ' ') + '. ' + padRight(test_results.failed[k].name + ' ', 68, '.') + ' 🚫'
+      '\n' + padLeft(a.index, 5, ' ') + '. ' + padRight(a.name + ' ', 68, '.') + ' 🚫'
     );
-
-    if (test_results.failed[k].isCaught[0] || test_results.failed[k].isCaught[1]) {
-      if (test_results.failed[k].isCaught[0]) {
-        text.push(
-          '      ' + test_results.failed[k].a.toString()
-        );
-      }
-      if (test_results.failed[k].isCaught[1]) {
-        text.push(
-          '      ' + test_results.failed[k].b.toString()
-        );
-      }
-    } else {
-      text.push(
-        '\n +' + '   Left: ' + padLeft(typeToString(test_results.failed[k].b), 66, ' ') +
-        '\n -' + '  Right: ' + padLeft(typeToString(test_results.failed[k].a), 66, ' ')
-      );
-    }
-  }
+  });
 
   text.push('```', '');
 };

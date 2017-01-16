@@ -14,10 +14,13 @@ const config = JSON.parse(fs.readFileSync('grunt.json'));
 
 const source = path.join(config.src, 'readme');
 
-function generate(test_results, callback) {
+function generate(testResults, callback) {
   let content = {};
   let text = [];
-  var hasTests = test_results && test_results.int_total > 0;
+  var hasTests = testResults && testResults.tests.length > 0;
+  var total = testResults && testResults.tests.length;
+  var passed = testResults && testResults.tests.filter(a => a.passed);
+  var failed = testResults && testResults.tests.filter(a => !a.passed);
 
   m(source, /\.md$/)
     .forEach(function (a) {
@@ -43,10 +46,10 @@ function generate(test_results, callback) {
   text.push('');
 
   if (hasTests) {
-    if (test_results.int_passed === test_results.int_total) {
-      text.push('#### ✅ All ' + test_results.int_total + ' tests pass');
+    if (passed.length === total) {
+      text.push('#### ✅ All ' + total + ' tests pass');
     } else {
-      text.push('#### 🚫 ' + test_results.int_passed + ' of ' + test_results.int_total + ' tests passed (' + Math.round((test_results.int_passed / test_results.int_total) * 100) + '%)');
+      text.push('#### 🚫 ' + passed.length + ' of ' + total + ' tests passed (' + Math.round((passed.length / total) * 100) + '%)');
     }
   } else {
     text.push('#### 🐛 No unit tests');
@@ -67,7 +70,7 @@ function generate(test_results, callback) {
   printContents(text, content, 1);
 
   if (hasTests) {
-    printTests(text, test_results);
+    printTests(text, testResults);
   }
 
   fs.writeFileSync('README.md', text.join('\n'));
