@@ -24,7 +24,7 @@ module.exports = {
 
     return result;
   },
-  equal : function () {
+  isDeepEqual : function () {
     return [ 2, 0, 1 ];
   }
 };

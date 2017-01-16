@@ -26,7 +26,7 @@ module.exports = {
 
     return [ getNode(el('A')), getNode(node), getNode(el('B')) ];
   },
-  equal : function () {
+  isDeepEqual : function () {
     return [ node, node, node ];
   }
 };

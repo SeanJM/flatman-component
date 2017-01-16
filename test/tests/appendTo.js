@@ -22,7 +22,7 @@ module.exports = {
     result.push(a.childNodes.length);
     return result;
   },
-  equal : function () {
+  isDeepEqual : function () {
     return [ 2 ];
   }
 };

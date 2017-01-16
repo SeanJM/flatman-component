@@ -39,10 +39,10 @@ module.exports = {
 
     r.removeChild(c);
     result.push(r.childNodes.length);
-    
+
     return result;
   },
-  equal : function () {
+  isDeepEqual : function () {
     return [ 0, 1, 0, 1, 0 ];
   }
 };

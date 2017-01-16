@@ -21,7 +21,7 @@ module.exports = {
     a.addClass('this-class');
     return a.hasClass('this-class');
   },
-  equal : function () {
+  isEqual : function () {
     return true;
   }
 };

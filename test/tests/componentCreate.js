@@ -41,7 +41,7 @@ module.exports = {
       && hasSmile
     );
   },
-  equal : function () {
+  isDeepEqual : function () {
     return true;
   }
 };

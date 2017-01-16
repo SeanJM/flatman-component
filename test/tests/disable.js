@@ -32,7 +32,7 @@ module.exports = {
 
     return result;
   },
-  equal : function () {
+  isDeepEqual : function () {
     return [ 'disabled', 'disabled', null, null ];
   }
 };

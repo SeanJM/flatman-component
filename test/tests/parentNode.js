@@ -25,7 +25,7 @@ module.exports = {
 
     return c.parentNode === r.node.document;
   },
-  equal : function () {
+  isDeepEqual : function () {
     return true;
   }
 };

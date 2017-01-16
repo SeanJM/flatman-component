@@ -22,10 +22,10 @@ module.exports = {
     let c = el('A');
 
     r.append([c]);
-    
+
     return c.parentComponent === r;
   },
-  equal : function () {
+  isDeepEqual : function () {
     return true;
   }
 };

@@ -21,7 +21,7 @@ module.exports = {
     a.removeClass('shuffle');
     return a.hasClass('shuffle');
   },
-  notEqual : function () {
+  isNotEqual : function () {
     return true;
   }
 };
