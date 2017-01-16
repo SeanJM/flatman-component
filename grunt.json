@@ -2,7 +2,7 @@
   "src": "src/",
   "dest": "bin/",
   "isBundle": true,
-  "isProduction": true,
+  "isProduction": false,
   "sourceMap": false,
   "isSite": false,
   "useClosure": true,
