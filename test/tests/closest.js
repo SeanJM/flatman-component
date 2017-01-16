@@ -9,8 +9,6 @@ let c;
 module.exports = {
   name : '.closest()',
   this : function () {
-    var result = [];
-
     Component.create('A', {
       render() {
         return el('div');
@@ -23,11 +21,9 @@ module.exports = {
 
     a.append([ b.append([ c ]) ]);
 
-    result.push(c.closest('A'));
-
-    return result;
+    return c.closest('A');
   },
-  isDeepEqual : function () {
-    return [ b ];
+  isEqual : function () {
+    return b;
   }
 };

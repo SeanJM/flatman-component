@@ -9,8 +9,6 @@ let c;
 module.exports = {
   name : '.closest() (string selector)',
   this : function () {
-    var result = [];
-
     Component.create('A', {
       render() {
         return el('div');
@@ -23,11 +21,9 @@ module.exports = {
 
     a.append([ b.append([ c ]) ]);
 
-    result.push(c.closest('.a'));
-
-    return result;
+    return c.closest('.a');
   },
-  isDeepEqual : function () {
-    return [ a ];
+  isEqual : function () {
+    return a.node.document;
   }
 };
