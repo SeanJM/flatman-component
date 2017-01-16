@@ -1,11 +1,16 @@
-Component.prototype.closest = function (constructor) {
+Component.prototype.closest = function (selector) {
   var p = this.parentComponent;
 
-  while (p) {
-    if (p instanceof constructor) {
-      return p;
+  if (Component.lib[selector]) {
+    selector = Component.lib[selector];
+    while (p) {
+      if (p instanceof selector) {
+        return p;
+      }
+      p = p.parentComponent;
     }
-    p = p.parentComponent;
+  } else {
+    return this.node.document.closest(selector);
   }
 
   return false;
