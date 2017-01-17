@@ -3,7 +3,6 @@ const padLeft = require(path.resolve('grunt/lib/padLeft'));
 const padRight = require(path.resolve('grunt/lib/padRight'));
 
 module.exports = function (text, testResults) {
-  var total = testResults && testResults.tests.length;
   var passed = testResults && testResults.tests.filter(a => a.passed);
   var failed = testResults && testResults.tests.filter(a => !a.passed);
 
