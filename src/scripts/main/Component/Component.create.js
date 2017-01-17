@@ -54,6 +54,6 @@ Component.create = function (name, methods) {
     }
   }
 
-  C.__name__ = name;
   Component.lib[name] = C;
+  return C;
 };
