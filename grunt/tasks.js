@@ -40,7 +40,6 @@ if (images.files.length) {
 }
 
 tasks.push(
-  'clean',
   'readme',
   'flatman'
 );
