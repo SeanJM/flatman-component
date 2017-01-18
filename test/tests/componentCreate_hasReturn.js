@@ -1,4 +1,4 @@
-const Component = require('../../bin/Component');
+const Component = require('../../index');
 
 module.exports = {
   name : 'Create component (has return value)',
