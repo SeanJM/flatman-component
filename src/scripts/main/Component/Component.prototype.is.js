@@ -1,5 +1,6 @@
 Component.prototype.is = function (selector) {
   const selectorObject = getSelectorObject(selector);
+  const attributes = this.node.document.attr();
 
   if (selectorObject.tagName) {
     if (selectorObject.tagName !== this.tagName) {
@@ -14,10 +15,10 @@ Component.prototype.is = function (selector) {
       }
     } else if (selectorObject.attributes[k]) {
       if (typeof selectorObject.attributes[k] === 'string') {
-        if (selectorObject.attributes[k] !== this.attributes[k]) {
+        if (selectorObject.attributes[k] !== attributes[k]) {
           return false;
         }
-      } else if (!selectorObject.attributes[k].test(this.attributes[k])) {
+      } else if (!selectorObject.attributes[k].test(attributes[k])) {
         return false;
       }
     }
