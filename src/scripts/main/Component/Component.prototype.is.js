@@ -1,6 +1,6 @@
 Component.prototype.is = function (selector) {
-  const selectorObject = getSelectorObject(selector);
-  const attributes = this.node.document.attr();
+  var selectorObject = getSelectorObject(selector);
+  var attributes = this.node.document.attr();
 
   if (selectorObject.tagName) {
     if (selectorObject.tagName !== this.tagName) {
