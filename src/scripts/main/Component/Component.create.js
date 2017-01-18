@@ -38,11 +38,11 @@ Component.create = function (name, methods) {
 
   for (method in methods) {
     if (method === 'append') {
-      C.prototype.append = facade.append(methods[method]);
+      C.prototype.append = Component.facade.append(methods[method]);
     } else if (method === 'remove') {
-      C.prototype.remove = facade.remove(methods[method]);
+      C.prototype.remove = Component.facade.remove(methods[method]);
     } else if (method === 'removeChild') {
-      C.prototype.removeChild = facade.removeChild(methods[method]);
+      C.prototype.removeChild = Component.facade.removeChild(methods[method]);
     } else if (method !== 'constructor') {
       C.prototype[method] = wrapper(method);
     }

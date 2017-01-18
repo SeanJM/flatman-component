@@ -4,11 +4,11 @@ Component.extend = function () {
 
   function each(a) {
     if (typeof a.prototype.append === 'function') {
-      a.prototype.append = facade.append(a.prototype.append);
+      a.prototype.append = Component.facade.append(a.prototype.append);
     }
 
     if (typeof a.prototype.remove === 'function') {
-      a.prototype.remove = facade.remove(a.prototype.remove);
+      a.prototype.remove = Component.facade.remove(a.prototype.remove);
     }
 
     for (var k in Component.prototype) {
