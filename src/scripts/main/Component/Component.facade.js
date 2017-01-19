@@ -2,7 +2,7 @@ Component.facade = function (methods) {
   if (Array.isArray(methods)) {
     methods.forEach(function (method) {
       if (!Component.prototype[method]) {
-        Component.prototype[method] = Component.facade.component(method);
+        Component.prototype[method] = Component.facade.method(method);
       }
     });
   } else {
@@ -49,7 +49,7 @@ Component.facade.removeChild = function (removeChild) {
   };
 };
 
-Component.facade.component = function (method) {
+Component.facade.method = function (method) {
   return function () {
     var i = 0;
     var n = arguments.length;
