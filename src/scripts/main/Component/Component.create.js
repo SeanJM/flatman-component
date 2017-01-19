@@ -4,7 +4,7 @@ Component.create = function (name, methods) {
 
   function Constructor(fn) {
     return function (opt) {
-      fn.apply(this, opt);
+      fn.call(this, opt);
     };
   }
 
