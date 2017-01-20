@@ -10,8 +10,8 @@ module.exports = {
   name : '.closest() (string selector)',
   this : function () {
     Component.create('A', {
-      render() {
-        return el('div');
+      render(props) {
+        return el('div', { className : props.className });
       }
     });
 
