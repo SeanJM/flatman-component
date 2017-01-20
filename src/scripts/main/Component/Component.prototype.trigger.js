@@ -1,42 +1,42 @@
 Component.prototype.trigger = function () {
   var self = this;
-  var isNameString = typeof arguments[0] === 'string';
+  var names = arguments[0];
+  var object = arguments[1];
+  var $names;
 
-  var name = isNameString
-    ? arguments[0].toLowerCase()
-    : arguments[0].type.toLowerCase();
-
-  var e = isNameString
-    ? arguments[1]
-    : arguments[0];
-
-  var names = name.split(',')
-    .map(function (a) { return a.trim(); })
-    .filter(function (a) { return a.length && self.subscribers && self.subscribers[a]; });
-
-  if (typeof e === 'undefined') {
-    e = {
-      type : name,
-      target : this
-    };
+  function filterNames(names) {
+    var split = names.split(',');
+    var filter = [];
+    for (i = 0, n = split.length; i < n; i++) {
+      split[i] = split[i].trim();
+      if (split[i].length && self.subscribers[split[i]]) {
+        filter.push(split[i]);
+      }
+    }
+    return filter;
   }
 
-  if (typeof e.type === 'undefined') {
-    e.type = name;
+  this.subscribers = this.subscribers || {};
+
+  if (typeof names === 'string') {
+    $names = filterNames(names.toLowerCase());
+    object = object || { target : this };
+  } else {
+    $names = filterNames(object.type.toLowerCase());
+    object.target = object.target || this;
   }
 
-  if (e.target === 'undefined') {
-    e.target = this;
-  }
-
-  if (typeof this.subscribers === 'undefined') {
-    this.subscribers = {};
-  }
-
-  names.forEach(function (name) {
-    self.subscribers[name].slice().forEach(function (callback) {
-      callback.call(self, e);
-    });
+  $names.forEach(function (name) {
+    self.subscribers[name]
+      .slice()
+      .forEach(function (callback) {
+        var $object = Object.assign(
+          {},
+          object,
+          { type : name }
+        );
+        callback.call(self, $object);
+      });
   });
 
   return this;
