@@ -1,5 +1,2 @@
-function Component(opt) {
-  this.init(opt);
-}
-
+function Component() {}
 Component.lib = {};
