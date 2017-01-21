@@ -21,9 +21,9 @@ module.exports = {
     a.append([b, c]);
     c.before(d);
 
-    result.push(a.childNodes.indexOf(b));
-    result.push(a.childNodes.indexOf(d));
-    result.push(a.childNodes.indexOf(c));
+    result.push(a.children().indexOf(b.getNode()));
+    result.push(a.children().indexOf(d.getNode()));
+    result.push(a.children().indexOf(c.getNode()));
 
     return result;
   },

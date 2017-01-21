@@ -20,10 +20,10 @@ module.exports = {
     let c = el('A');
 
     r.append([c]);
-    result.push(r.childNodes.length);
+    result.push(r.children().length);
 
     r.removeChild([c]);
-    result.push(r.childNodes.length);
+    result.push(r.children().length);
 
     return result;
   },

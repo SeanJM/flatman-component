@@ -23,7 +23,7 @@ module.exports = {
 
     r.append([c]);
 
-    return c.parentNode === r.node.document;
+    return c.parent() === r.getNode();
   },
   isDeepEqual : function () {
     return true;

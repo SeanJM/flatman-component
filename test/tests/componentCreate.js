@@ -27,7 +27,7 @@ module.exports = {
     let a = el('A');
 
     const isHTML = a.node.document.toString().indexOf('HTML') > -1;
-    const hasChildren = Array.isArray(a.childNodes);
+    const hasChildren = Array.isArray(a.children());
     const hasSubscribers = typeof a.subscribers === 'object';
     const hasNodeProperty = typeof a.node === 'object';
     const hasSmile = a.smile() === 'smile';

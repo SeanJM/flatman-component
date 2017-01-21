@@ -19,7 +19,7 @@ module.exports = {
 
     b.appendTo(a);
     c.appendTo(a);
-    result.push(a.childNodes.length);
+    result.push(a.children().length);
     return result;
   },
   isDeepEqual : function () {

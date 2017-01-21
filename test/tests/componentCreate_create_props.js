@@ -3,15 +3,18 @@ const el = flatman.el;
 const Component = flatman.Component;
 
 module.exports = {
-  name : '.is()',
+  name : 'Create component (check constructor props)',
   this : function () {
+    var hasProps;
+
     Component.create('A', {
-      render() {
-        return el('div', { className : 'this' });
+      constructor(props) {
+        hasProps = props.hasProps;
       }
     });
 
-    return el('A').is('.this');
+    el('A', { hasProps : true });
+    return hasProps;
   },
   isEqual : function () {
     return true;

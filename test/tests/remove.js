@@ -5,25 +5,21 @@ const Component = flatman.Component;
 module.exports = {
   name : '.remove()',
   this : function () {
+    let result = [];
+
     Component.create('A', {
-      constructor() {
-        this.test = 'test';
-      },
       render() {
         return el('div');
       }
     });
 
-    let result = [];
-
     let r = el('A');
     let c = el('A');
 
     r.append([c]);
-    result.push(r.childNodes.length);
-
+    result.push(r.children().length);
     c.remove();
-    result.push(r.childNodes.length);
+    result.push(r.children().length);
 
     return result;
   },
