@@ -3,7 +3,7 @@
   "version": "0.8.4",
   "license": "MIT",
   "author": "Sean MacIsaac <seanjmacisaac@gmail.com> (http://twitter.com/seanjmacisaac)",
-  "main": "bin/Component.js",
+  "main": "index.js",
   "scripts": {
     "test": "test/index.js"
   },
@@ -26,7 +26,6 @@
     "imagemin-optipng": "^5.2.0",
     "imagemin-pngquant": "^5.0.0",
     "lodash": "^3.10.1",
-    "match-file-utility": "^3.4.0",
-    "tiny-test": "^0.5.9"
+    "match-file-utility": "^3.4.0"
   }
 }

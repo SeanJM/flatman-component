@@ -60,10 +60,7 @@ function getSelectorObject(selector) {
   return selectorObject;
 }
 
-function Component(opt) {
-  this.init(opt);
-}
-
+function Component() {}
 Component.lib = {};
 
 Component.create = function (name, methods) {
@@ -72,7 +69,7 @@ Component.create = function (name, methods) {
 
   function Constructor(fn) {
     return function (opt) {
-      fn.apply(this, opt);
+      fn.call(this, opt);
     };
   }
 
@@ -89,9 +86,7 @@ Component.create = function (name, methods) {
 
       result = methods[k].apply(this, $arguments);
 
-      return typeof result === 'undefined'
-        ? this
-        : result;
+      return result;
     };
   }
 
@@ -107,10 +102,6 @@ Component.create = function (name, methods) {
   for (method in methods) {
     if (method === 'append') {
       C.prototype.append = Component.facade.append(methods[method]);
-    } else if (method === 'remove') {
-      C.prototype.remove = Component.facade.remove(methods[method]);
-    } else if (method === 'removeChild') {
-      C.prototype.removeChild = Component.facade.removeChild(methods[method]);
     } else if (method !== 'constructor') {
       C.prototype[method] = wrapper(method);
     }
@@ -155,7 +146,7 @@ Component.facade = function (methods) {
   if (Array.isArray(methods)) {
     methods.forEach(function (method) {
       if (!Component.prototype[method]) {
-        Component.prototype[method] = Component.facade.component(method);
+        Component.prototype[method] = Component.facade.method(method);
       }
     });
   } else {
@@ -165,44 +156,13 @@ Component.facade = function (methods) {
 
 Component.facade.append = function (append) {
   return function (children) {
-    var self = this;
-
     append.call(this, children);
-
     this.mapChildrenToNode(children);
-
-    children.forEach(function (child) {
-      child.parentComponent = self;
-      self.childNodes.push(child);
-    });
-
     return this;
   };
 };
 
-Component.facade.remove = function (remove) {
-  return function () {
-    remove.call(this);
-    return Component.prototype.remove.call(this);
-  };
-};
-
-Component.facade.removeChild = function (removeChild) {
-  return function () {
-    var i = 0;
-    var n = arguments.length;
-    var $arguments = new Array(n);
-
-    for (; i < n; i++) {
-      $arguments[i] = arguments[i];
-    }
-
-    removeChild.apply(this, $arguments);
-    return Component.prototype.removeChild.apply(this, $arguments);
-  };
-};
-
-Component.facade.component = function (method) {
+Component.facade.method = function (method) {
   return function () {
     var i = 0;
     var n = arguments.length;
@@ -232,47 +192,8 @@ Component.prototype.after = function (target) {
 };
 
 Component.prototype.append = function (children) {
-  var self = this;
-
-  this.childNodes = this.childNodes || [];
-
   this.mapChildrenToNode(children);
-
   this.node.document.append(children);
-
-  children.forEach(function (child) {
-    getNode(child).parentNode = self.node.document;
-  });
-
-  children.forEach(function (child) {
-    child.parentComponent = self;
-    self.childNodes.push(child);
-  });
-
-  return this;
-};
-
-Component.prototype.appendTo = function (target) {
-  target = typeof el === 'function'
-    ? el(target)
-    : target;
-
-  this.node.document.appendTo(target);
-  this.parentNode = target;
-
-  return this;
-};
-
-Component.prototype.before = function (target) {
-  var childNodes = this.parentComponent.childNodes;
-
-  if (typeof target === 'undefined') {
-    return childNodes[childNodes.indexOf(target) - 1];
-  }
-
-  this.node.document.before(target);
-  childNodes.splice(childNodes.indexOf(this), 0, target);
-
   return this;
 };
 
@@ -310,64 +231,11 @@ Component.prototype.enable = function () {
   return this;
 };
 
-Component.prototype.init = function (opt) {
-  this.node = this.node || {};
-  this.childNodes = this.childNodes || [];
-
-  this.dict = {
-    disabledElements : [],
-    isDisabled : false
-  };
-
-  for (var k in opt) {
-    if (k.substr(0, 4) === 'once') {
-      this.once(k.substr(4), opt[k]);
-    } else if (k.substr(0, 2) === 'on') {
-      this.on(k.substr(2), opt[k]);
-    } else {
-      this.dict[k] = opt[k];
-    }
-  }
-};
-
-Component.prototype.is = function (selector) {
-  var selectorObject = getSelectorObject(selector);
-  var attributes = this.node.document.attr();
-
-  if (selectorObject.tagName) {
-    if (selectorObject.tagName !== this.tagName) {
-      return false;
-    }
-  }
-
-  for (var k in selectorObject.attributes) {
-    if (k === 'className') {
-      if (!this.hasClass(selectorObject.attributes[k]).filter(function (a) { return a; }).length) {
-        return false;
-      }
-    } else if (selectorObject.attributes[k]) {
-      if (typeof selectorObject.attributes[k] === 'string') {
-        if (selectorObject.attributes[k] !== attributes[k]) {
-          return false;
-        }
-      } else if (!selectorObject.attributes[k].test(attributes[k])) {
-        return false;
-      }
-    }
-  }
-
-  return true;
-};
-
 Component.prototype.mapChildrenToNode = function (children) {
   var self = this;
 
-  function getName(element) {
-    return element.dict && element.dict.name || element.name && element.name();
-  }
-
   children.forEach(function (child) {
-    var name = getName(child);
+    var name = child.name && child.name();
     if (name) {
       self.node[name] = child;
     }
@@ -477,73 +345,45 @@ Component.prototype.prepend = function (children) {
   return this;
 };
 
-Component.prototype.remove = function () {
-  var node = getNode(this.node.document);
-  var parentNode = getNode(this.parentNode);
-  var parentComponent = this.parentComponent;
-
-  var index = this.parentNode.childNodes.indexOf(this);
-  parentNode.removeChild(node);
-  this.parentNode.childNodes.splice(index, 1);
-
-  if (parentComponent) {
-    index = parentComponent.childNodes.indexOf(this);
-    parentComponent.childNodes.splice(index, 1);
-  }
-
-  return this;
-};
-
-Component.prototype.removeChild = function (maybeChild) {
-  if (Array.isArray(maybeChild)) {
-    maybeChild.forEach(function (child) {
-      child.remove();
-    });
-  } else {
-    maybeChild.remove();
-  }
-  return this;
-};
-
 Component.prototype.trigger = function () {
   var self = this;
-  var isNameString = typeof arguments[0] === 'string';
+  var names = arguments[0];
+  var object = arguments[1];
+  var $names;
 
-  var name = isNameString
-    ? arguments[0].toLowerCase()
-    : arguments[0].type.toLowerCase();
-
-  var e = isNameString
-    ? arguments[1]
-    : arguments[0];
-
-  var names = name.split(',')
-    .map(function (a) { return a.trim(); })
-    .filter(function (a) { return a.length && self.subscribers && self.subscribers[a]; });
-
-  if (typeof e === 'undefined') {
-    e = {
-      type : name,
-      target : this
-    };
+  function filterNames(names) {
+    var split = names.split(',');
+    var filter = [];
+    for (i = 0, n = split.length; i < n; i++) {
+      split[i] = split[i].trim();
+      if (split[i].length && self.subscribers[split[i]]) {
+        filter.push(split[i]);
+      }
+    }
+    return filter;
   }
 
-  if (typeof e.type === 'undefined') {
-    e.type = name;
+  this.subscribers = this.subscribers || {};
+
+  if (typeof names === 'string') {
+    $names = filterNames(names.toLowerCase());
+    object = object || { target : this };
+  } else {
+    $names = filterNames(object.type.toLowerCase());
+    object.target = object.target || this;
   }
 
-  if (e.target === 'undefined') {
-    e.target = this;
-  }
-
-  if (typeof this.subscribers === 'undefined') {
-    this.subscribers = {};
-  }
-
-  names.forEach(function (name) {
-    self.subscribers[name].slice().forEach(function (callback) {
-      callback.call(self, e);
-    });
+  $names.forEach(function (name) {
+    self.subscribers[name]
+      .slice()
+      .forEach(function (callback) {
+        var $object = Object.assign(
+          {},
+          object,
+          { type : name }
+        );
+        callback.call(self, $object);
+      });
   });
 
   return this;

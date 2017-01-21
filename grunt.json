@@ -1,10 +1,10 @@
 {
   "src": "src/",
-  "dest": "bin/",
+  "dest": "",
   "isBundle": true,
-  "isProduction": true,
+  "isProduction": false,
   "sourceMap": false,
   "isSite": false,
-  "useClosure": true,
-  "bundle": "Component.js"
+  "useClosure": false,
+  "bundle": "index.js"
 }
