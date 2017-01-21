@@ -21,9 +21,7 @@ Component.create = function (name, methods) {
 
       result = methods[k].apply(this, $arguments);
 
-      return typeof result === 'undefined'
-        ? this
-        : result;
+      return result;
     };
   }
 
@@ -39,10 +37,6 @@ Component.create = function (name, methods) {
   for (method in methods) {
     if (method === 'append') {
       C.prototype.append = Component.facade.append(methods[method]);
-    } else if (method === 'remove') {
-      C.prototype.remove = Component.facade.remove(methods[method]);
-    } else if (method === 'removeChild') {
-      C.prototype.removeChild = Component.facade.removeChild(methods[method]);
     } else if (method !== 'constructor') {
       C.prototype[method] = wrapper(method);
     }
