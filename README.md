@@ -1,4 +1,4 @@
-# Flatman Component 0.8.4
+# Flatman Component 0.9.0
 #### License: [MIT](https://opensource.org/licenses/MIT)
 
 #### ✅ All 20 tests pass
