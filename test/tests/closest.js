@@ -6,6 +6,7 @@ const Component = flatman.Component;
 module.exports = {
   name : '.closest()',
   this : function () {
+    Component.lib = {};
     Component.create('A', {
       render(props) {
         return el('div', { className : props.className });

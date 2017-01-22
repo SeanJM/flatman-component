@@ -6,7 +6,7 @@ module.exports = {
   name : 'Create component (check constructor props)',
   this : function () {
     var hasProps;
-
+    Component.lib = {};
     Component.create('A', {
       constructor(props) {
         hasProps = props.hasProps;

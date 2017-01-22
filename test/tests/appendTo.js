@@ -6,7 +6,7 @@ module.exports = {
   name : '.appendTo()',
   this : function () {
     var result = [];
-
+    Component.lib = {};
     Component.create('A', {
       render() {
         return el('div');

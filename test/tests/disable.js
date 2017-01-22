@@ -6,7 +6,7 @@ module.exports = {
   name : 'Disable',
   this : function () {
     let result = [];
-
+    Component.lib = {};
     Component.create('B', {
       constructor() {
         this.test = 'test';

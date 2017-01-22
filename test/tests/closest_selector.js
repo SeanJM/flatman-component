@@ -9,6 +9,7 @@ let c;
 module.exports = {
   name : '.closest() (string selector)',
   this : function () {
+    Component.lib = {};
     Component.create('A', {
       render(props) {
         return el('div', { className : props.className });

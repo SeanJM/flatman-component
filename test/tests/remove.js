@@ -6,7 +6,7 @@ module.exports = {
   name : '.remove()',
   this : function () {
     let result = [];
-
+    Component.lib = {};
     Component.create('A', {
       render() {
         return el('div');

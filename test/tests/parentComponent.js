@@ -5,6 +5,7 @@ const Component = flatman.Component;
 module.exports = {
   name : 'Parent Component',
   this : function () {
+    Component.lib = {};
     Component.create('A', {
       constructor() {
         this.test = 'test';

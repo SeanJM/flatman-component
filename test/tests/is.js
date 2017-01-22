@@ -5,6 +5,7 @@ const Component = flatman.Component;
 module.exports = {
   name : '.is()',
   this : function () {
+    Component.lib = {};
     Component.create('A', {
       render() {
         return el('div', { className : 'this' });

@@ -7,7 +7,7 @@ module.exports = {
   this : function () {
     var isBoolean = false;
     var result = [];
-
+    Component.lib = {};
     Component.create('A', {
       constructor() {
         this.on('click', () => this.onClick());
