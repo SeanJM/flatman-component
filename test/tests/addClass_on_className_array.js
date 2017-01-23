@@ -5,7 +5,8 @@ const Component = flatman.Component;
 module.exports = {
   name : 'Add class on \'className\' array',
   this : function () {
-    Component.create('B', {
+    Component.lib = {};
+    Component.create('A', {
       add() {
         this.addClass('is');
         return this;
@@ -15,7 +16,7 @@ module.exports = {
       }
     });
 
-    let a = el('B').add();
+    let a = el('A').add();
     return a.attr('class');
   },
   isEqual : function () {
