@@ -5,7 +5,8 @@ Component.prototype.on = function (name, callback) {
     this.subscribers = {};
   }
 
-  name
+  if (callback) {
+    name
     .toLowerCase()
     .split(',')
     .forEach(function (a) {
@@ -20,6 +21,8 @@ Component.prototype.on = function (name, callback) {
         }
       }
     });
+  }
+
 
   return this;
 };
