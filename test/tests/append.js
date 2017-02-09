@@ -6,16 +6,15 @@ module.exports = {
   name : '.append()',
   this : function () {
     var result = [];
-    Component.lib = {};
-    Component.create('A', {
+    Component.create('C', {
       render() {
         return el('div');
       }
     });
 
-    let a = el('A', { className : 'a' });
-    let b = el('A', { className : 'b' });
-    let c = el('A', { className : 'c' });
+    let a = el('C', { className : 'a' });
+    let b = el('C', { className : 'b' });
+    let c = el('C', { className : 'c' });
 
     a.append([b, c]);
     result.push(a.children().length);

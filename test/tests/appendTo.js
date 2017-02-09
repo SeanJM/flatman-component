@@ -7,15 +7,15 @@ module.exports = {
   this : function () {
     var result = [];
     Component.lib = {};
-    Component.create('A', {
+    Component.create('D', {
       render() {
         return el('div');
       }
     });
 
-    let a = el('A', { className : 'a' });
-    let b = el('A', { className : 'b' });
-    let c = el('A', { className : 'c' });
+    let a = el('D', { className : 'a' });
+    let b = el('D', { className : 'b' });
+    let c = el('D', { className : 'c' });
 
     b.appendTo(a);
     c.appendTo(a);

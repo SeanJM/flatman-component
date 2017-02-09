@@ -7,16 +7,16 @@ module.exports = {
   this : function () {
     var result = [];
     Component.lib = {};
-    Component.create('A', {
+    Component.create('E', {
       render() {
         return el('div');
       }
     });
 
-    let a = el('A', { className : 'a' });
-    let b = el('A', { className : 'b' });
-    let c = el('A', { className : 'c' });
-    let d = el('A', { className : 'd' });
+    let a = el('E', { className : 'a' });
+    let b = el('E', { className : 'b' });
+    let c = el('E', { className : 'c' });
+    let d = el('E', { className : 'd' });
 
     a.append([b, c]);
     c.before(d);
