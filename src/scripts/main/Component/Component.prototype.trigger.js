@@ -19,23 +19,18 @@ Component.prototype.trigger = function () {
   this.subscribers = this.subscribers || {};
 
   if (typeof names === 'string') {
+    object = object || {};
     $names = filterNames(names.toLowerCase());
-    object = object || { target : this };
   } else {
+    object = arguments[0];
     $names = filterNames(object.type.toLowerCase());
-    object.target = object.target || this;
   }
 
   $names.forEach(function (name) {
     self.subscribers[name]
       .slice()
       .forEach(function (callback) {
-        var $object = Object.assign(
-          {},
-          object,
-          { type : name }
-        );
-        callback.call(self, $object);
+        callback.call(self, object);
       });
   });
 

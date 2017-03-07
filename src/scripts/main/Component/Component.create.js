@@ -6,6 +6,7 @@ Component.create = function (name) {
   function createConstructor(methods) {
     var methodList = [];
     var C = function () {};
+    var onCreateEventObject = {};
 
     function Constructor(fn) {
       return function (opt) {
@@ -54,6 +55,11 @@ Component.create = function (name) {
     }
 
     Component.lib[name] = C;
+    onCreateEventObject = { name : name, constructor : C };
+    Component.onCreateListeners.forEach(function (subscriber) {
+      subscriber(onCreateEventObject);
+    });
+
     return C;
   }
 
