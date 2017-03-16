@@ -12,8 +12,17 @@ Component.facade = function (methods) {
 
 Component.facade.append = function (append) {
   return function (children) {
-    children = Array.isArray(children) ? children : [children];
+    children = Array.isArray(children) ? children : [ children ];
     append.call(this, children);
+    this.mapChildrenToNode(children);
+    return this;
+  };
+};
+
+Component.facade.prepend = function (prepend) {
+  return function (children) {
+    children = Array.isArray(children) ? children : [ children ];
+    prepend.call(this, children);
     this.mapChildrenToNode(children);
     return this;
   };

@@ -43,6 +43,8 @@ Component.create = function (name) {
     for (method in methods) {
       if (method === 'append') {
         C.prototype.append = Component.facade.append(methods[method]);
+      } else if (method === 'prepend') {
+        C.prototype.prepend = Component.facade.prepend(methods[method]);
       } else if (method !== 'constructor') {
         C.prototype[method] = wrapper(method);
       }
