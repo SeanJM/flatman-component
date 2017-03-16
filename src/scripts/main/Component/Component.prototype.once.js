@@ -6,7 +6,9 @@ Component.prototype.once = function (names, callback) {
     self.off(names, ref);
   }
 
-  this.on(names, ref);
+  if (callback) {
+    this.on(names, ref);
+  }
 
   return this;
 };
