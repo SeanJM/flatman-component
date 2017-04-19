@@ -26,6 +26,7 @@
     "imagemin-optipng": "^5.2.0",
     "imagemin-pngquant": "^5.0.0",
     "lodash": "^3.10.1",
-    "match-file-utility": "^3.4.0"
+    "match-file-utility": "^3.4.0",
+    "tiny-test": "^0.9.0"
   }
 }
