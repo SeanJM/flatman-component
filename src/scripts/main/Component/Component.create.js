@@ -3,41 +3,37 @@ Component.create = function (name) {
     Component.function[name] = thunk;
   }
 
+  function wrapper(method, methods) {
+    return function () {
+      var i = 0;
+      var n = arguments.length;
+      var $arguments = new Array(n);
+      var result;
+
+      for (;i < n; i++) {
+        $arguments[i] = arguments[i];
+      }
+
+      result = methods[method].apply(this, $arguments);
+
+      return result;
+    };
+  }
+
   function createConstructor(methods) {
-    var methodList = [];
-    var C = function () {};
-    var onCreateEventObject = {};
+    var C = methods && methods.constructor
+      ? Constructor(methods.constructor)
+      : function () {};
+
+    var eventObject = {
+      name : name,
+      constructor : C
+    };
 
     function Constructor(fn) {
       return function (opt) {
         fn.call(this, opt);
       };
-    }
-
-    function wrapper(k) {
-      return function () {
-        var i = 0;
-        var n = arguments.length;
-        var $arguments = new Array(n);
-        var result;
-
-        for (;i < n; i++) {
-          $arguments[i] = arguments[i];
-        }
-
-        result = methods[k].apply(this, $arguments);
-
-        return result;
-      };
-    }
-
-    for (var k in methods) {
-      if (methods.hasOwnProperty(k)) {
-        methodList.push(k);
-        if (k === 'constructor') {
-          C = Constructor(methods[k]);
-        }
-      }
     }
 
     for (method in methods) {
@@ -46,21 +42,22 @@ Component.create = function (name) {
       } else if (method === 'prepend') {
         C.prototype.prepend = Component.facade.prepend(methods[method]);
       } else if (method !== 'constructor') {
-        C.prototype[method] = wrapper(method);
+        C.prototype[method] = wrapper(method, methods);
       }
     }
 
-    for (var method in Component.prototype) {
+    for (method in Component.prototype) {
       if (typeof C.prototype[method] === 'undefined') {
         C.prototype[method] = Component.prototype[method];
       }
     }
 
     Component.lib[name] = C;
-    onCreateEventObject = { name : name, constructor : C };
-    Component.onCreateListeners.forEach(function (subscriber) {
-      subscriber(onCreateEventObject);
-    });
+
+    Component.onCreateListeners
+      .forEach(function (subscriber) {
+        subscriber(eventObject);
+      });
 
     return C;
   }
