@@ -21,7 +21,7 @@ Component.createWrapper = function (el) {
         $arguments[i] = arguments[i];
       }
 
-      result = this.node.component[method].apply(this.node.component, $arguments);
+      result = this.component[method].apply(this.component, $arguments);
 
       if (typeof result === 'undefined') {
         return this;
@@ -44,9 +44,7 @@ Component.createWrapper = function (el) {
     }
 
     methods.constructor = function (props) {
-      this.node = {
-        component : el(tagName)
-      };
+      this.component = el(tagName);
       if (constructor) {
         constructor.call(this, props);
       }
