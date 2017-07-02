@@ -33,7 +33,7 @@ Component.facade.method = function (method) {
     var i = 0;
     var n = arguments.length;
     var $arguments = new Array(n);
-    var root = this.node.document;
+    var root = this.document;
     var result;
 
     for (;i < n; i++) {

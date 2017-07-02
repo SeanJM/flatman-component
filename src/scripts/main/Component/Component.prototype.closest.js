@@ -10,7 +10,7 @@ Component.prototype.closest = function (selector) {
       p = p.parentComponent;
     }
   } else {
-    return this.node.document.closest(selector);
+    return this.document.closest(selector);
   }
 
   return false;

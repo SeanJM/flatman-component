@@ -1,5 +1,5 @@
 Component.prototype.append = function (children) {
   this.mapChildrenToNode(children);
-  this.node.document.append(children);
+  this.document.append(children);
   return this;
 };

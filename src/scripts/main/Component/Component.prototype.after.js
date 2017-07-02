@@ -5,7 +5,7 @@ Component.prototype.after = function (target) {
     return childNodes[childNodes.indexOf(target) + 1];
   }
 
-  this.node.document.after(target);
+  this.document.after(target);
   childNodes.splice(childNodes.indexOf(this) + 1, 0, target);
 
   return this;
