@@ -19,7 +19,7 @@ Component.prototype.trigger = function () {
   this.subscribers = this.subscribers || {};
 
   if (typeof names === 'string') {
-    object = typeof object !== "undefined" || {};
+    object = typeof object !== "undefined" ? object : {};
     $names = filterNames(names.toLowerCase());
   } else {
     object = arguments[0];
