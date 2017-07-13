@@ -1,6 +1,6 @@
 {
   "name": "flatman-component",
-  "version": "0.11.0",
+  "version": "0.11.1",
   "license": "MIT",
   "author": "Sean MacIsaac <seanjmacisaac@gmail.com> (http://twitter.com/seanjmacisaac)",
   "main": "index.js",
