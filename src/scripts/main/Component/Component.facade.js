@@ -12,9 +12,22 @@ Component.facade = function (methods) {
 
 Component.facade.append = function (append) {
   return function (children) {
-    children = Array.isArray(children) ? children : [ children ];
-    append.call(this, children);
+    children = Array.isArray(children)
+      ? children
+      : [ children ];
+
     this.mapChildrenToNode(children);
+    append.call(this, children);
+
+    return this;
+  };
+};
+
+Component.facade.appendTo = function (appendTo) {
+  return function (child) {
+    child.mapChildrenToNode(this);
+    appendTo.call(this, child);
+
     return this;
   };
 };
