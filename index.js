@@ -13,7 +13,7 @@ function getComponentNames(component, node) {
 function createComponentProperties(tagName, props, children) {
   this.tagName = tagName;
   this.names = {};
-  this.props = props;
+  this.props = this.props || props;
   this.childNodes = [];
 
   if (typeof this.render === 'function') {
@@ -21,7 +21,9 @@ function createComponentProperties(tagName, props, children) {
     this.node = this.document.node;
     if (this.document) {
       getComponentNames(this, this.document);
-      this.append(children);
+      if (children.length) {
+        this.append(children);
+      }
     } else {
       throw new Error('Invalid component, component must return a node in the render function.');
     }
@@ -47,12 +49,32 @@ function createComponentMethodProxy(method, methods) {
 
 function createComponentConstructor(tagName, methods) {
   var C = methods && methods.constructor
-    ? function (props, children) {
+    ? function () {
+        var props = {};
+        var children = [];
+
+        if (Array.isArray(arguments[0])) {
+          children = arguments[0];
+        } else if (typeof arguments[0] === 'object') {
+          props = arguments[0];
+          children = arguments[1] || children;
+        }
+
         methods.constructor.call(this, props);
         createComponentProperties.call(this, tagName, props, children);
       }
     : function () {
-        createComponentProperties.call(this, {});
+        var props = {};
+        var children = [];
+
+        if (Array.isArray(arguments[0])) {
+          children = arguments[0];
+        } else if (typeof arguments[0] === 'object') {
+          props = arguments[0];
+          children = arguments[1] || children;
+        }
+
+        createComponentProperties.call(this, tagName, props, children);
       };
 
   var eventObject = {
@@ -61,11 +83,7 @@ function createComponentConstructor(tagName, methods) {
   };
 
   for (method in methods) {
-    if (method === 'append') {
-      C.prototype.append = Component.facade.append(methods[method]);
-    } else if (method === 'prepend') {
-      C.prototype.prepend = Component.facade.prepend(methods[method]);
-    } else if (method !== 'constructor') {
+    if (method !== 'constructor') {
       C.prototype[method] = createComponentMethodProxy(method, methods);
     } else {
       C.prototype[method] = methods[method];
@@ -185,37 +203,6 @@ Component.facade = function (methods) {
   } else {
     throw 'Invalid argument for Component.facade. The argument must be an array of methods.';
   }
-};
-
-Component.facade.append = function (append) {
-  return function (children) {
-    children = Array.isArray(children)
-      ? children
-      : [ children ];
-
-    this.mapChildrenToNode(children);
-    append.call(this, children);
-
-    return this;
-  };
-};
-
-Component.facade.appendTo = function (appendTo) {
-  return function (child) {
-    child.mapChildrenToNode(this);
-    appendTo.call(this, child);
-
-    return this;
-  };
-};
-
-Component.facade.prepend = function (prepend) {
-  return function (children) {
-    children = Array.isArray(children) ? children : [ children ];
-    prepend.call(this, children);
-    this.mapChildrenToNode(children);
-    return this;
-  };
 };
 
 Component.facade.method = function (method) {

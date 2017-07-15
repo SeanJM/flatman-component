@@ -10,37 +10,6 @@ Component.facade = function (methods) {
   }
 };
 
-Component.facade.append = function (append) {
-  return function (children) {
-    children = Array.isArray(children)
-      ? children
-      : [ children ];
-
-    this.mapChildrenToNode(children);
-    append.call(this, children);
-
-    return this;
-  };
-};
-
-Component.facade.appendTo = function (appendTo) {
-  return function (child) {
-    child.mapChildrenToNode(this);
-    appendTo.call(this, child);
-
-    return this;
-  };
-};
-
-Component.facade.prepend = function (prepend) {
-  return function (children) {
-    children = Array.isArray(children) ? children : [ children ];
-    prepend.call(this, children);
-    this.mapChildrenToNode(children);
-    return this;
-  };
-};
-
 Component.facade.method = function (method) {
   return function () {
     var i = 0;

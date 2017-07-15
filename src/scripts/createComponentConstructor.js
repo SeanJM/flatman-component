@@ -1,11 +1,31 @@
 function createComponentConstructor(tagName, methods) {
   var C = methods && methods.constructor
-    ? function (props, children) {
+    ? function () {
+        var props = {};
+        var children = [];
+
+        if (Array.isArray(arguments[0])) {
+          children = arguments[0];
+        } else if (typeof arguments[0] === 'object') {
+          props = arguments[0];
+          children = arguments[1] || children;
+        }
+
         methods.constructor.call(this, props);
         createComponentProperties.call(this, tagName, props, children);
       }
     : function () {
-        createComponentProperties.call(this, {});
+        var props = {};
+        var children = [];
+
+        if (Array.isArray(arguments[0])) {
+          children = arguments[0];
+        } else if (typeof arguments[0] === 'object') {
+          props = arguments[0];
+          children = arguments[1] || children;
+        }
+
+        createComponentProperties.call(this, tagName, props, children);
       };
 
   var eventObject = {
@@ -14,11 +34,7 @@ function createComponentConstructor(tagName, methods) {
   };
 
   for (method in methods) {
-    if (method === 'append') {
-      C.prototype.append = Component.facade.append(methods[method]);
-    } else if (method === 'prepend') {
-      C.prototype.prepend = Component.facade.prepend(methods[method]);
-    } else if (method !== 'constructor') {
+    if (method !== 'constructor') {
       C.prototype[method] = createComponentMethodProxy(method, methods);
     } else {
       C.prototype[method] = methods[method];
