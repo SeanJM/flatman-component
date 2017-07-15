@@ -1,1 +1,515 @@
-function Component(){}Component.lib={},Component.function={},Component.onCreateListeners=[],Component.create=function(a){function b(b){Component.function[a]=b}function c(a,b){return function(){for(var c=0,d=arguments.length,e=new Array(d);c<d;c++)e[c]=arguments[c];return b[a].apply(this,e)}}function d(b){function d(a){return function(b){a.call(this,b)}}var e=b&&b.constructor?d(b.constructor):function(){},f={name:a,constructor:e};for(method in b)"append"===method?e.prototype.append=Component.facade.append(b[method]):"prepend"===method?e.prototype.prepend=Component.facade.prepend(b[method]):"constructor"!==method&&(e.prototype[method]=c(method,b));for(method in Component.prototype)void 0===e.prototype[method]&&(e.prototype[method]=Component.prototype[method]);return Component.lib[a]=e,Component.onCreateListeners.forEach(function(a){a(f)}),e}if(Component.lib[a]||Component.function[a])throw"Cannot create Component function: duplicate name '"+a+"'";return"function"==typeof arguments[1]?b(arguments[1]):d(arguments[1])},Component.createWrapper=function(a){function b(a){return function(){for(var b,c=0,d=arguments.length,e=new Array(d);c<d;c++)e[c]=arguments[c];return b=this.component[a].apply(this.component,e),void 0===b?this:b}}var c={},d=a("div");for(var e in d)"function"==typeof d[e]&&(c[e]=!0);d=void 0,Component.wrap=function(d,e){var f=a(d),g=e.render,h=e.constructor;for(var i in f)"function"!=typeof f[i]||e[i]||c[i]||(e[i]=b(i));return e.constructor=function(b){this.component=a(d),h&&h.call(this,b)},e.render=function(a){return g.call(this,a)},e}},Component.facade=function(a){if(!Array.isArray(a))throw"Invalid argument for Component.facade. The argument must be an array of methods.";a.forEach(function(a){Component.prototype[a]||(Component.prototype[a]=Component.facade.method(a))})},Component.facade.append=function(a){return function(b){return b=Array.isArray(b)?b:[b],a.call(this,b),this.mapChildrenToNode(b),this}},Component.facade.prepend=function(a){return function(b){return b=Array.isArray(b)?b:[b],a.call(this,b),this.mapChildrenToNode(b),this}},Component.facade.method=function(a){return function(){for(var b,c=0,d=arguments.length,e=new Array(d),f=this.document;c<d;c++)e[c]=arguments[c];return b=f[a].apply(f,e),void 0===b?this:b}},Component.find=function(a){var b=[];for(var c in Component.lib)a.test(c)&&b.push(c);return b},Component.off=function(a,b){function c(a,b){var c=Component.subscribers[a];c.splice(c.indexOf(b),1)}a=a.toLowerCase().split(",");for(var d=0,e=a.length;d<e;d++)if(a[d]=a[d].trim(),a[d].length&&b)c(a[d],b);else for(;Component.subscribers[a[d]].length;)c(a[d],Component.subscribers[a[d]][0]);return Component},Component.onCreate=function(a){return Component.onCreateListeners.push(a),Component},Component.trigger=function(){var a,b,c=Component.subscribers;return"string"==typeof arguments[0]?(a=arguments[0],b=arguments[1]||{}):(a=arguments[0].type,b=arguments[0]),a=a.toLowerCase().split(","),Component.node.disabled||a.forEach(function(a){a=a.trim(),a.length&&c[a]&&c[a].forEach(function(c){c(Object.assign({},b,{type:a}))})}),Component},Component.prototype.after=function(a){var b=this.parentComponent.childNodes;return void 0===a?b[b.indexOf(a)+1]:(this.document.after(a),b.splice(b.indexOf(this)+1,0,a),this)},Component.prototype.append=function(a){return this.mapChildrenToNode(a),this.document.append(a),this},Component.prototype.closest=function(a){var b=this.parentComponent;if(!Component.lib[a])return this.document.closest(a);for(a=Component.lib[a];b;){if(b instanceof a)return b;b=b.parentComponent}return!1},Component.prototype.disable=function(){return this.document.disable(),this.document.childNodes.forEach(function(a){a.disable()}),this},Component.prototype.enable=function(){return this.document.enable(),this.document.childNodes.forEach(function(a){a.enable()}),this},Component.prototype.mapChildrenToNode=function(a){var b,c=this;a=Array.isArray(a)?a:[a];for(var d=0,e=a.length;d<e;d++)(b=a[d].name&&a[d].name())&&!c.node[b]&&(c.node[b]=a[d]);return this},Component.prototype.mount=function(){function a(a){a.trigger("mount"),a.document&&a.document.trigger("mount")}a(this)},Component.prototype.off=function(a,b){var c=this;return void 0===this.subscribers&&(this.subscribers={}),a.toLowerCase().split(",").forEach(function(a){var d;if(a=a.trim(),void 0!==c.subscribers[a]){for(d=c.subscribers[a].indexOf(b);-1!==d;)c.subscribers[a].splice(d,1),d=c.subscribers[a].indexOf(b);if(void 0===b)for(;c.subscribers[a].length;)c.subscribers[a].shift()}}),this},Component.prototype.on=function(a,b){var c=this;return void 0===this.subscribers&&(this.subscribers={}),b&&a.toLowerCase().split(",").forEach(function(a){a=a.trim(),a.length&&(void 0===c.subscribers[a]&&(c.subscribers[a]=[]),-1===c.subscribers[a].indexOf(b)&&c.subscribers[a].push(b))}),this},Component.prototype.once=function(a,b){function c(e){b.call(d,e),d.off(a,c)}var d=this;return b&&this.on(a,c),this},Component.prototype.prepend=function(a){return this.mapChildrenToNode(a),this.document.prepend(a),this},Component.prototype.remove=function(){var a=this.parentNode.childNodes;return a.splice(a.indexOf(this),1),this.node.parentNode.removeChild(this.node),this},Component.prototype.trigger=function(){function a(a){var b=a.split(","),d=[];for(i=0,n=b.length;i<n;i++)b[i]=b[i].trim(),b[i].length&&c.subscribers[b[i]]&&d.push(b[i]);return d}var b,c=this,d=arguments[0],e=arguments[1];return this.subscribers=this.subscribers||{},"string"==typeof d?(e=void 0!==e?e:{},b=a(d.toLowerCase())):(e=arguments[0],b=a(e.type.toLowerCase())),b.forEach(function(a){c.subscribers[a].slice().forEach(function(a){a.call(c,e)})}),this},"object"==typeof module&&module.exports&&(module.exports=Component);
+function getComponentNames(component, node) {
+  if (node.children) {
+    node.children().forEach(function (child) {
+      var name = child.name && child.name();
+      if (name && !component.names[name]) {
+        component.names[name] = child.component || child;
+      }
+      getComponentNames(component, child);
+    });
+  }
+}
+
+function createComponentProperties(tagName, props, children) {
+  this.tagName = tagName;
+  this.names = {};
+  this.props = props;
+  this.childNodes = [];
+
+  if (typeof this.render === 'function') {
+    this.document = this.render(props);
+    this.node = this.document.node;
+    if (this.document) {
+      getComponentNames(this, this.document);
+      this.append(children);
+    } else {
+      throw new Error('Invalid component, component must return a node in the render function.');
+    }
+  }
+}
+
+function createComponentMethodProxy(method, methods) {
+  return function () {
+    var i = 0;
+    var n = arguments.length;
+    var $arguments = new Array(n);
+    var result;
+
+    for (;i < n; i++) {
+      $arguments[i] = arguments[i];
+    }
+
+    result = methods[method].apply(this, $arguments);
+
+    return result;
+  };
+}
+
+function createComponentConstructor(tagName, methods) {
+  var C = methods && methods.constructor
+    ? function (props, children) {
+        methods.constructor.call(this, props);
+        createComponentProperties.call(this, tagName, props, children);
+      }
+    : function () {
+        createComponentProperties.call(this, {});
+      };
+
+  var eventObject = {
+    tagName : tagName,
+    constructor : C
+  };
+
+  for (method in methods) {
+    if (method === 'append') {
+      C.prototype.append = Component.facade.append(methods[method]);
+    } else if (method === 'prepend') {
+      C.prototype.prepend = Component.facade.prepend(methods[method]);
+    } else if (method !== 'constructor') {
+      C.prototype[method] = createComponentMethodProxy(method, methods);
+    } else {
+      C.prototype[method] = methods[method];
+    }
+  }
+
+  for (method in Component.prototype) {
+    if (typeof C.prototype[method] === 'undefined') {
+      C.prototype[method] = Component.prototype[method];
+    }
+  }
+
+  for (var i = 0, n = Component.onCreateListeners.length; i < n; i++) {
+    Component.onCreateListeners[i](eventObject);
+  }
+
+  return C;
+}
+
+function Component() {}
+Component.lib = {};
+Component.function = {};
+Component.onCreateListeners = [];
+
+
+Component.create = function (tagName, methods) {
+  if (Component.lib[tagName]) {
+    throw new Error(
+      'Cannot create Component function: duplicate name \'' + tagName + '\''
+    );
+  }
+
+  if (typeof methods === 'function') {
+    Component.lib[tagName] = Component.create(tagName, {
+      render: function (props) {
+        return methods(props);
+      }
+    });
+  } else {
+    Component.lib[tagName] = createComponentConstructor(
+      tagName,
+      methods
+    );
+  }
+
+  return Component.lib[tagName];
+};
+
+
+Component.createWrapper = function (el) {
+  var keyGuard = {};
+  var tempElement = el('div');
+
+  for (var k in tempElement) {
+    if (typeof tempElement[k] === 'function') {
+      keyGuard[k] = true;
+    }
+  }
+
+  tempElement = undefined;
+
+  function wrapMethod(method) {
+    return function () {
+      var i = 0;
+      var n = arguments.length;
+      var $arguments = new Array(n);
+      var result;
+
+      for (;i < n; i++) {
+        $arguments[i] = arguments[i];
+      }
+
+      result = this.component[method].apply(this.component, $arguments);
+
+      if (typeof result === 'undefined') {
+        return this;
+      }
+
+      return result;
+    };
+  }
+
+  Component.wrap = function wrap(tagName, methods) {
+    var cTemp = el(tagName);
+    var render = methods.render;
+    var constructor = methods.constructor;
+
+    // These are the methods bound the wrapped component, it's contextual 'this'
+    for (var k in cTemp) {
+      if (typeof cTemp[k] === 'function' && !methods[k] && !keyGuard[k]) {
+        methods[k] = wrapMethod(k);
+      }
+    }
+
+    methods.constructor = function (props) {
+      this.component = el(tagName);
+      if (constructor) {
+        constructor.call(this, props);
+      }
+    };
+
+    methods.render = function (props) {
+      return render.call(this, props);
+    };
+
+    return methods;
+  };
+};
+
+Component.facade = function (methods) {
+  if (Array.isArray(methods)) {
+    methods.forEach(function (method) {
+      if (!Component.prototype[method]) {
+        Component.prototype[method] = Component.facade.method(method);
+      }
+    });
+  } else {
+    throw 'Invalid argument for Component.facade. The argument must be an array of methods.';
+  }
+};
+
+Component.facade.append = function (append) {
+  return function (children) {
+    children = Array.isArray(children)
+      ? children
+      : [ children ];
+
+    this.mapChildrenToNode(children);
+    append.call(this, children);
+
+    return this;
+  };
+};
+
+Component.facade.appendTo = function (appendTo) {
+  return function (child) {
+    child.mapChildrenToNode(this);
+    appendTo.call(this, child);
+
+    return this;
+  };
+};
+
+Component.facade.prepend = function (prepend) {
+  return function (children) {
+    children = Array.isArray(children) ? children : [ children ];
+    prepend.call(this, children);
+    this.mapChildrenToNode(children);
+    return this;
+  };
+};
+
+Component.facade.method = function (method) {
+  return function () {
+    var i = 0;
+    var n = arguments.length;
+    var $arguments = new Array(n);
+    var root = this.document;
+    var result;
+
+    for (;i < n; i++) {
+      $arguments[i] = arguments[i];
+    }
+
+    result = root[method].apply(root, $arguments);
+    return typeof result === 'undefined' ? this : result;
+  };
+};
+
+Component.find = function (name) {
+  var matches = [];
+  for (var k in Component.lib) {
+    if (name.test(k)) {
+      matches.push(k);
+    }
+  }
+  return matches;
+};
+
+
+Component.off = function (names, callback) {
+  function each(name, callback) {
+    var subscribers = Component.subscribers[name];
+    subscribers.splice(subscribers.indexOf(callback), 1);
+  }
+
+  names = names.toLowerCase().split(',');
+  for (var i = 0, n = names.length; i < n; i++) {
+    names[i] = names[i].trim();
+    if (names[i].length && callback) {
+      each(names[i], callback);
+    } else while (Component.subscribers[names[i]].length) {
+      each(names[i], Component.subscribers[names[i]][0]);
+    }
+  }
+
+  return Component;
+};
+
+
+Component.onCreate = function (callback) {
+  Component.onCreateListeners.push(callback);
+  return Component;
+};
+
+
+Component.trigger = function () {
+  var subscribers = Component.subscribers;
+  var names;
+  var detail;
+
+  if (typeof arguments[0] === 'string') {
+    names = arguments[0];
+    detail = arguments[1] || {};
+  } else {
+    names = arguments[0].type;
+    detail = arguments[0];
+  }
+
+  names = names.toLowerCase().split(',');
+
+  if (!Component.node.disabled) {
+    names.forEach(function (name) {
+      name = name.trim();
+      if (name.length && subscribers[name]) {
+        subscribers[name].forEach(function (callback) {
+          callback(Object.assign({}, detail, { type : name }));
+        });
+      }
+    });
+  }
+
+  return Component;
+};
+
+
+Component.prototype.after = function (target) {
+  this.document.after.call(this, target);
+  return this;
+};
+
+
+Component.prototype.append = function (children) {
+  this.document.append(children);
+  this.mapChildrenToNode(children);
+  return this;
+};
+
+
+Component.prototype.appendTo = function (child) {
+  child.mapChildrenToNode(this);
+  this.document.appendTo(child);
+  return this;
+};
+
+
+// 'this' is appended before target
+Component.prototype.before = function (target) {
+  this.document.before.call(this, target);
+  return this;
+};
+
+
+Component.prototype.closest = function (selector) {
+  return this.document.closest.call(this, selector);
+};
+
+
+Component.prototype.disable = function () {
+  this.document.disable();
+  this.document.childNodes.forEach(function (a) {
+    a.disable();
+  });
+  return this;
+};
+
+
+Component.prototype.is = function (selector) {
+  return this.document.is.call(this, selector);
+};
+
+
+Component.prototype.enable = function () {
+  this.document.enable();
+  this.document.childNodes.forEach(function (a) {
+    a.enable();
+  });
+  return this;
+};
+
+
+Component.prototype.mapChildrenToNode = function (children) {
+  var name;
+
+  children = Array.isArray(children)
+    ? children
+    : [ children ];
+
+  for (var i = 0, n = children.length; i < n; i++) {
+    name = children[i].name && children[i].name();
+    children[i].parentNode = this;
+    if (name && !this.node[name]) {
+      this.node[name] = children[i];
+    }
+  }
+
+  [].push.apply(this.childNodes, children);
+  return this;
+};
+
+Component.prototype.off = function (name, callback) {
+  var self = this;
+
+  if (typeof this.subscribers === 'undefined') {
+    this.subscribers = {};
+  }
+
+  name
+    .toLowerCase()
+    .split(',')
+    .forEach(function (a) {
+      var i;
+
+      a = a.trim();
+
+      if (typeof self.subscribers[a] !== 'undefined') {
+        i = self.subscribers[a].indexOf(callback);
+
+        while (i !== -1) {
+          self.subscribers[a].splice(i, 1);
+          i = self.subscribers[a].indexOf(callback);
+        }
+
+        if (typeof callback === 'undefined') {
+          while (self.subscribers[a].length) {
+            self.subscribers[a].shift();
+          }
+        }
+      }
+    });
+
+  return this;
+};
+
+
+Component.prototype.on = function (name, callback) {
+  var self = this;
+
+  if (typeof this.subscribers === 'undefined') {
+    this.subscribers = {};
+  }
+
+  if (callback) {
+    name
+    .toLowerCase()
+    .split(',')
+    .forEach(function (a) {
+      a = a.trim();
+      if (a.length) {
+        if (typeof self.subscribers[a] === 'undefined') {
+          self.subscribers[a] = [];
+        }
+
+        if (self.subscribers[a].indexOf(callback) === -1) {
+          self.subscribers[a].push(callback);
+        }
+      }
+    });
+  }
+
+
+  return this;
+};
+
+
+Component.prototype.once = function (names, callback) {
+  var self = this;
+
+  function ref(e) {
+    callback.call(self, e);
+    self.off(names, ref);
+  }
+
+  if (callback) {
+    this.on(names, ref);
+  }
+
+  return this;
+};
+
+
+Component.prototype.prepend = function (children) {
+  this.mapChildrenToNode(children);
+  this.document.prepend(children);
+  return this;
+};
+
+
+Component.prototype.remove = function () {
+  this.document.remove.call(this);
+  return this;
+};
+
+
+Component.prototype.trigger = function () {
+  var self = this;
+  var names = arguments[0];
+  var object = arguments[1];
+  var $names;
+
+  function filterNames(names) {
+    var split = names.split(',');
+    var filter = [];
+    for (i = 0, n = split.length; i < n; i++) {
+      split[i] = split[i].trim();
+      if (split[i].length && self.subscribers[split[i]]) {
+        filter.push(split[i]);
+      }
+    }
+    return filter;
+  }
+
+  this.subscribers = this.subscribers || {};
+
+  if (typeof names === 'string') {
+    object = typeof object !== "undefined" ? object : {};
+    $names = filterNames(names.toLowerCase());
+  } else {
+    object = arguments[0];
+    $names = filterNames(object.type.toLowerCase());
+  }
+
+  $names.forEach(function (name) {
+    self.subscribers[name]
+      .slice()
+      .forEach(function (callback) {
+        callback.call(self, object);
+      });
+  });
+
+  return this;
+};
+
+
+if (module && module.exports) {
+  module.exports = Component;
+}

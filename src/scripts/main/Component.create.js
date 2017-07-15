@@ -7,7 +7,7 @@ Component.create = function (tagName, methods) {
 
   if (typeof methods === 'function') {
     Component.lib[tagName] = Component.create(tagName, {
-      render(props) {
+      render: function (props) {
         return methods(props);
       }
     });

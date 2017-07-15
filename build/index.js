@@ -52,13 +52,14 @@ function render() {
 
   fs.writeFileSync(
     path.resolve(out),
-    str.join('\n')
+    str.join('\n\n')
   );
 }
 
 render();
 test();
-if (!process.env.production) {
+
+if (process.env.ENV !== 'prod') {
   watch('src/scripts/**/*.js', function () {
     render();
     test();

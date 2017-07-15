@@ -1,3 +1,3 @@
-if (typeof module === 'object' && module.exports) {
+if (module && module.exports) {
   module.exports = Component;
 }
