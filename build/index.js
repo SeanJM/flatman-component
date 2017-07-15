@@ -7,7 +7,6 @@ const test = require('./test');
 
 const files = [
   "getComponentNames",
-  "createComponentProperties",
   "createComponentMethodProxy",
   "createComponentConstructor",
   "main/Component",

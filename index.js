@@ -10,26 +10,6 @@ function getComponentNames(component, node) {
   }
 }
 
-function createComponentProperties(tagName, props, children) {
-  this.tagName = tagName;
-  this.names = {};
-  this.props = this.props || props;
-  this.childNodes = [];
-
-  if (typeof this.render === 'function') {
-    this.document = this.render(props);
-    this.node = this.document.node;
-    if (this.document) {
-      getComponentNames(this, this.document);
-      if (children.length) {
-        this.append(children);
-      }
-    } else {
-      throw new Error('Invalid component, component must return a node in the render function.');
-    }
-  }
-}
-
 function createComponentMethodProxy(method, methods) {
   return function () {
     var i = 0;
@@ -48,34 +28,39 @@ function createComponentMethodProxy(method, methods) {
 }
 
 function createComponentConstructor(tagName, methods) {
-  var C = methods && methods.constructor
-    ? function () {
-        var props = {};
-        var children = [];
+  var C = function Component(a, b) {
+    var props = {};
+    var children = [];
 
-        if (Array.isArray(arguments[0])) {
-          children = arguments[0];
-        } else if (typeof arguments[0] === 'object') {
-          props = arguments[0];
-          children = arguments[1] || children;
+    if (Array.isArray(a)) {
+      children = a;
+    } else if (typeof a === 'object') {
+      props = a;
+      children = b || children;
+    }
+
+    if (methods && methods.constructor) {
+      methods.constructor.call(this, props);
+    }
+
+    this.props = this.props || props;
+    this.tagName = tagName;
+    this.names = {};
+    this.childNodes = [];
+
+    if (typeof this.render === 'function') {
+      this.document = this.render(props);
+      this.node = this.document.node;
+      if (this.document) {
+        getComponentNames(this, this.document);
+        if (children.length) {
+          this.append(children);
         }
-
-        methods.constructor.call(this, props);
-        createComponentProperties.call(this, tagName, props, children);
+      } else {
+        throw new Error('Invalid component, component must return a node in the render function.');
       }
-    : function () {
-        var props = {};
-        var children = [];
-
-        if (Array.isArray(arguments[0])) {
-          children = arguments[0];
-        } else if (typeof arguments[0] === 'object') {
-          props = arguments[0];
-          children = arguments[1] || children;
-        }
-
-        createComponentProperties.call(this, tagName, props, children);
-      };
+    }
+  };
 
   var eventObject = {
     tagName : tagName,
