@@ -497,6 +497,6 @@ Component.prototype.trigger = function () {
 };
 
 
-if (module && module.exports) {
+if (module) {
   module.exports = Component;
 }
