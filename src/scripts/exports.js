@@ -1,3 +1,3 @@
-if (module) {
+if (module && module.exports) {
   module.exports = Component;
 }
