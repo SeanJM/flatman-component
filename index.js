@@ -105,8 +105,6 @@ function createComponentConstructor(tagName, methods) {
 
 function Component() {}
 
-var module = module || {};
-
 Component.lib = {};
 Component.function = {};
 Component.onCreateListeners = [];
@@ -500,6 +498,6 @@ Component.prototype.trigger = function () {
 };
 
 
-if (module && module.exports) {
+if (typeof module !== 'undefined' && module.exports) {
   module.exports = Component;
 }
