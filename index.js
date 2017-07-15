@@ -306,7 +306,7 @@ Component.prototype.append = function (children) {
 
 
 Component.prototype.appendTo = function (parentNode) {
-  this.document.appendTo(parent);
+  this.document.appendTo(parentNode);
   this.parentNode = parentNode;
   return this;
 };
