@@ -105,7 +105,7 @@ function createComponentConstructor(tagName, methods) {
 
 function Component() {}
 
-module = module || {};
+var module = module || {};
 
 Component.lib = {};
 Component.function = {};
