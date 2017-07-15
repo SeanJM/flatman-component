@@ -6,12 +6,15 @@ module.exports = {
   name : 'Create component thunk',
   this : function () {
     const a = el('div');
-    Component.lib = {};
-    Component.create('Z', props => {
-      return a.attr(props);
+    let b;
+
+    Component.function = {};
+
+    Component.create('Z', () => {
+      return a;
     });
 
-    let b = el('Z', { className : 'test' });
+    b = el('Z');
 
     return b === a;
   },

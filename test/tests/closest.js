@@ -18,7 +18,9 @@ module.exports = {
     let c = el('A', { className : 'c' });
 
     a.append([ b.append([ c ]) ]);
-    return c.closest(a => a.component.tagName === 'A') === b.getNode();
+    return c.closest(a => {
+      return a.tagName === 'A';
+    }) === b;
   },
   isEqual : function () {
     return true;

@@ -1,5 +1,4 @@
 Component.prototype.mapChildrenToNode = function (children) {
-  var self = this;
   var name;
 
   children = Array.isArray(children)
@@ -8,11 +7,12 @@ Component.prototype.mapChildrenToNode = function (children) {
 
   for (var i = 0, n = children.length; i < n; i++) {
     name = children[i].name && children[i].name();
-
-    if (name && !self.node[name]) {
-      self.node[name] = children[i];
+    children[i].parentNode = this;
+    if (name && !this.node[name]) {
+      this.node[name] = children[i];
     }
   }
 
+  [].push.apply(this.childNodes, children);
   return this;
 };

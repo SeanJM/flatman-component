@@ -7,7 +7,7 @@ let b;
 let c;
 
 module.exports = {
-  name : '.closest() (string selector)',
+  name : '.closest() (predicate)',
   this : function () {
     Component.lib = {};
     Component.create('A', {
@@ -22,9 +22,9 @@ module.exports = {
 
     a.append([ b.append([ c ]) ]);
 
-    return c.closest('.a');
+    return c.closest(n => n.tagName === 'A') === b;
   },
   isEqual : function () {
-    return a.node.document;
+    return true;
   }
 };

@@ -7,6 +7,7 @@ module.exports = {
   this : function () {
     let result = [];
     Component.lib = {};
+
     Component.create('B', {
       constructor() {
         this.test = 'test';
@@ -24,11 +25,11 @@ module.exports = {
 
     a.disable();
     result.push(a.attr('disabled'));
-    result.push(a.node.anAwesomeName.attr('disabled'));
+    result.push(a.names.anAwesomeName.attr('disabled'));
 
     a.enable();
     result.push(a.attr('disabled'));
-    result.push(a.node.anAwesomeName.attr('disabled'));
+    result.push(a.names.anAwesomeName.attr('disabled'));
 
     return result;
   },
