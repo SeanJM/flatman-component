@@ -1,5 +1,5 @@
-Component.prototype.appendTo = function (child) {
-  this.document.appendTo(child);
-  Component.prototype.mapChildrenToNode.call(child, this);
+Component.prototype.appendTo = function (parentNode) {
+  this.document.appendTo(parent);
+  this.parentNode = parentNode;
   return this;
 };
