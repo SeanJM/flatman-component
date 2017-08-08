@@ -16,7 +16,7 @@ function createComponentConstructor(tagName, methods) {
 
     this.props = this.props || props;
     this.tagName = tagName;
-    this.names = {};
+    this.names = this.names || {};
     this.childNodes = [];
 
     if (typeof this.render === 'function') {
