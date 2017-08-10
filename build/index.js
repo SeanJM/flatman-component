@@ -14,6 +14,7 @@ const files = [
   "main/Component.createWrapper",
   "main/Component.facade",
   "main/Component.find",
+  "main/Component.fn",
   "main/Component.off",
   "main/Component.onCreate",
   "main/Component.trigger",
