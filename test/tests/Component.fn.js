@@ -20,11 +20,16 @@ module.exports = {
       }
     });
 
+    Component.fn("test2", function (e) {
+      this.props.test = "test2";
+      return this;
+    });
+
     flatman.Component.lib = Component.lib;
-    return el("xx").test().props.test;
+    return [ el("xx").test().props.test, el("xx").test2().props.test ];
   },
 
-  isEqual : function () {
-    return "test";
+  isDeepEqual : function () {
+    return [ "test", "test2" ];
   }
 };
