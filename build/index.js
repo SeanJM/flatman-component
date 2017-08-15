@@ -11,7 +11,7 @@ const files = [
   "createComponentConstructor",
   "main/Component",
   "main/Component.create",
-  "main/Component.createWrapper",
+  "main/Component.wrap",
   "main/Component.facade",
   "main/Component.find",
   "main/Component.fn",
