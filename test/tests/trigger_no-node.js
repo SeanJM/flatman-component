@@ -1,6 +1,6 @@
 const flatman = require('flatman-server');
 const el = flatman.el;
-const Component = flatman.Component;
+const Component = require('../../index');
 
 let isCreated = false;
 
@@ -17,7 +17,7 @@ module.exports = {
         isCreated = true;
       }
     });
-
+    flatman.Component.lib = Component.lib;
     o = el('o');
     o.onCreate();
     return isCreated;

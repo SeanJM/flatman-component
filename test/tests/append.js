@@ -1,17 +1,20 @@
 const flatman = require('flatman-server');
 const el = flatman.el;
-const Component = flatman.Component;
+const Component = require("../../index.js");
 
 module.exports = {
   name : '.append()',
   this : function () {
     var result = [];
+    Component.lib = {};
+
     Component.create('C', {
       render() {
         return el('div');
       }
     });
 
+    flatman.Component.lib = Component.lib;
     let a = el('C', { className : 'a' });
     let b = el('C', { className : 'b' });
     let c = el('C', { className : 'c' });

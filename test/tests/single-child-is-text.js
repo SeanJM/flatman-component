@@ -1,6 +1,6 @@
 const flatman = require('flatman-server');
 const el = flatman.el;
-const Component = flatman.Component;
+const Component = require('../../index');
 
 module.exports = {
   name : 'Component has text as child',
@@ -13,7 +13,7 @@ module.exports = {
         return el('div');
       }
     });
-
+    flatman.Component.lib = Component.lib;
     a = el('y', [ 'loophole' ]);
     return a.childNodes[0] === 'loophole';
   },

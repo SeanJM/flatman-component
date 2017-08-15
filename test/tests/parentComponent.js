@@ -1,6 +1,6 @@
 const flatman = require('flatman-server');
 const el = flatman.el;
-const Component = flatman.Component;
+const Component = require('../../index');
 
 module.exports = {
   name : 'Parent Component',
@@ -18,6 +18,8 @@ module.exports = {
         ]);
       }
     });
+
+    flatman.Component.lib = Component.lib;
 
     let r = el('A');
     let c = el('A');

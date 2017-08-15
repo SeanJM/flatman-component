@@ -436,8 +436,8 @@ Component.prototype.remove = function () {
 };
 
 
-Component.prototype.removeChild = function () {
-  this.document.removeChild.call(this);
+Component.prototype.removeChild = function (child) {
+  this.document.removeChild.call(this, child);
   return this;
 };
 

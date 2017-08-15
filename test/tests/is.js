@@ -1,6 +1,6 @@
 const flatman = require('flatman-server');
 const el = flatman.el;
-const Component = flatman.Component;
+const Component = require('../../index');
 
 module.exports = {
   name : '.is()',
@@ -11,7 +11,7 @@ module.exports = {
         return el('div', { className : 'this' });
       }
     });
-
+    flatman.Component.lib = Component.lib;
     return el('A').is('A');
   },
   isEqual : function () {

@@ -1,11 +1,12 @@
 const flatman = require('flatman-server');
 const el = flatman.el;
-const Component = flatman.Component;
+const Component = require("../../index.js");
 
 module.exports = {
   name : 'Create component',
   this : function () {
     Component.lib = {};
+
     Component.create('A', {
       constructor() {
         this.test = 'test';
@@ -24,6 +25,8 @@ module.exports = {
         ]);
       }
     });
+
+    flatman.Component.lib = Component.lib;
 
     let a = el('A');
 

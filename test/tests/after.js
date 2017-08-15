@@ -1,12 +1,12 @@
 const flatman = require('flatman-server');
 const el = flatman.el;
-const Component = flatman.Component;
+const Component = require("../../index.js");
 
 module.exports = {
   name : '.after()',
   this : function () {
-    var a = el('div', { className: 'a' });
-    var b = el('div', { className: 'b' });
+    let a = el('div', { className: 'a' });
+    let b = el('div', { className: 'b' });
 
     Component.lib = {};
 
@@ -16,7 +16,8 @@ module.exports = {
       }
     });
 
-    var c = el('a', [ a ]);
+    flatman.Component.lib = Component.lib;
+    let c = el('a', [ a ]);
     b.after(a);
 
     return c.childNodes[1] === b;

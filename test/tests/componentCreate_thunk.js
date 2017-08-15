@@ -1,6 +1,6 @@
 const flatman = require('flatman-server');
 const el = flatman.el;
-const Component = flatman.Component;
+const Component = require('../../index');
 
 module.exports = {
   name : 'Create component thunk',
@@ -14,6 +14,7 @@ module.exports = {
       return a;
     });
 
+    flatman.Component.lib = Component.lib;
     b = el('Z');
 
     return b === a;

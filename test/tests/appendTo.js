@@ -1,6 +1,6 @@
 const flatman = require('flatman-server');
 const el = flatman.el;
-const Component = flatman.Component;
+const Component = require("../../index.js");
 
 module.exports = {
   name : '.appendTo()',
@@ -13,13 +13,14 @@ module.exports = {
       }
     });
 
+    flatman.Component.lib = Component.lib;
     let a = el('D', { className : 'a' });
     let b = el('D', { className : 'b' });
     let c = el('D', { className : 'c' });
 
     b.appendTo(a);
     c.appendTo(a);
-    result.push(a.children().length);
+    result.push(a.childNodes.length);
     return result;
   },
   isDeepEqual : function () {

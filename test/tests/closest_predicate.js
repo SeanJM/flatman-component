@@ -1,6 +1,6 @@
 const flatman = require('flatman-server');
 const el = flatman.el;
-const Component = flatman.Component;
+const Component = require("../../index.js");
 
 let a;
 let b;
@@ -16,6 +16,7 @@ module.exports = {
       }
     });
 
+    flatman.Component.lib = Component.lib;
     a = el('A', { className : 'a' });
     b = el('A', { className : 'b' });
     c = el('A', { className : 'c' });

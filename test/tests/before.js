@@ -1,6 +1,6 @@
 const flatman = require('flatman-server');
 const el = flatman.el;
-const Component = flatman.Component;
+const Component = require("../../index.js");
 
 module.exports = {
   name : '.before()',
@@ -13,6 +13,7 @@ module.exports = {
       }
     });
 
+    flatman.Component.lib = Component.lib;
     let a = el('E', { className : 'a' });
     let b = el('E', { className : 'b' });
     let c = el('E', { className : 'c' });
