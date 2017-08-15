@@ -32,6 +32,7 @@ const files = [
   "main/Component.prototype.once",
   "main/Component.prototype.prepend",
   "main/Component.prototype.remove",
+  "main/Component.prototype.removeChild",
   "main/Component.prototype.trigger",
   "exports"
 ];

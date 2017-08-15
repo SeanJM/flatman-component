@@ -436,6 +436,12 @@ Component.prototype.remove = function () {
 };
 
 
+Component.prototype.removeChild = function () {
+  this.document.removeChild.call(this);
+  return this;
+};
+
+
 Component.prototype.trigger = function () {
   var self = this;
   var names = arguments[0];
