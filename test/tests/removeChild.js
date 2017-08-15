@@ -1,6 +1,6 @@
 const flatman = require('flatman-server');
 const el = flatman.el;
-const Component = require("../../index.js");
+const Component = require("../../index");
 
 module.exports = {
   name : '.removeChild()',

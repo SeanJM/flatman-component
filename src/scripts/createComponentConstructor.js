@@ -14,16 +14,24 @@ function createComponentConstructor(tagName, methods) {
       methods.constructor.call(this, props);
     }
 
-    this.props = this.props || props;
     this.tagName = tagName;
-    this.names = this.names || {};
     this.childNodes = [];
+    this.props = this.props || {};
+    this.refs = this.refs || {};
+
+    for (var k in props) {
+      if (k === "ref") {
+        this.ref = props[k];
+      } else if (!this.props[k]) {
+        this.props[k] = props[k];
+      }
+    }
 
     if (typeof this.render === 'function') {
       this.document = this.render(props);
       this.node = this.document.node;
       if (this.document) {
-        getComponentNames(this, this.document);
+        getComponentRefs(this, this.document);
         if (children.length) {
           this.append(children);
         }

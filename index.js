@@ -1,13 +1,10 @@
-function getComponentNames(component, node) {
-  if (node.children) {
-    node.children().forEach(function (child) {
-      var name = child.name && child.name();
-      if (name && !component.names[name]) {
-        component.names[name] = child.component || child;
-      }
-      getComponentNames(component, child);
-    });
-  }
+function getComponentRefs(component, node) {
+  node.childNodes.forEach(function (child) {
+    if (child.ref && !component.refs[child.ref]) {
+      component.refs[child.ref] = child.component || child;
+    }
+    getComponentRefs(component, child);
+  });
 }
 
 function createComponentMethodProxy(method, methods) {
@@ -43,16 +40,24 @@ function createComponentConstructor(tagName, methods) {
       methods.constructor.call(this, props);
     }
 
-    this.props = this.props || props;
     this.tagName = tagName;
-    this.names = this.names || {};
     this.childNodes = [];
+    this.props = this.props || {};
+    this.refs = this.refs || {};
+
+    for (var k in props) {
+      if (k === "ref") {
+        this.ref = props[k];
+      } else if (!this.props[k]) {
+        this.props[k] = props[k];
+      }
+    }
 
     if (typeof this.render === 'function') {
       this.document = this.render(props);
       this.node = this.document.node;
       if (this.document) {
-        getComponentNames(this, this.document);
+        getComponentRefs(this, this.document);
         if (children.length) {
           this.append(children);
         }
@@ -195,7 +200,7 @@ Component.fn = function (name, callback) {
         Component.lib[k].prototype[name] = callback;
       } else {
         console.log(
-          "[Component] Warning: the method \"" + k + "\" could not be added to \"" + name + "\""
+          "[Component] Warning: the method \"" + name + "\" could not be added to \"" + k + "\""
         );
       }
     }
@@ -324,18 +329,18 @@ Component.prototype.enable = function () {
 
 
 Component.prototype.mapChildrenToNode = function (children) {
-  var name;
+  var ref;
 
   children = Array.isArray(children)
     ? children
     : [ children ];
 
   for (var i = 0, n = children.length; i < n; i++) {
-    name = children[i].name && children[i].name();
+    ref = children[i].props && children[i].props.ref;
     children[i].parentNode = this;
     this.childNodes.push(children[i]);
-    if (name && !this.names[name]) {
-      this.names[name] = children[i];
+    if (ref && !this.refs[ref]) {
+      this.refs[ref] = children[i];
     }
   }
 

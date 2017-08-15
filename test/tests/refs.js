@@ -3,7 +3,7 @@ const el = flatman.el;
 const Component = require('../../index');
 
 module.exports = {
-  name : 'names()',
+  name : 'refs',
   this : function () {
     var isBoolean = false;
 
@@ -14,20 +14,20 @@ module.exports = {
         this.on('click', () => this.onClick());
       },
 
-      hasName() {
-        isBoolean = !!(this.names && this.names.divi);
+      hasRef() {
+        isBoolean = !!(this.refs && this.refs.divi);
       },
 
       render() {
         return el('div', [
-          el('div', { name: 'divi' })
+          el('div', { ref: 'divi' })
         ]);
       }
     });
 
     flatman.Component.lib = Component.lib;
     let a = el('A');
-    a.hasName();
+    a.hasRef();
 
     return isBoolean;
   },

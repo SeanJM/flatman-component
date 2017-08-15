@@ -7,7 +7,7 @@ Component.fn = function (name, callback) {
         Component.lib[k].prototype[name] = callback;
       } else {
         console.log(
-          "[Component] Warning: the method \"" + k + "\" could not be added to \"" + name + "\""
+          "[Component] Warning: the method \"" + name + "\" could not be added to \"" + k + "\""
         );
       }
     }

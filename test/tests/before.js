@@ -19,7 +19,7 @@ module.exports = {
     let c = el('E', { className : 'c' });
     let d = el('E', { className : 'd' });
 
-    a.append([b, c]);
+    a.append([ b, c ]);
     d.before(c);
 
     result.push(a.childNodes.indexOf(b));
