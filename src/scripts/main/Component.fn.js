@@ -3,7 +3,13 @@ Component.fn = function (name, callback) {
     Component.prototype[name] = callback;
 
     for (var k in Component.lib) {
-      Component.lib[k].prototype[name] = callback;
+      if (typeof Component.lib[k].prototype[name] === "undefined") {
+        Component.lib[k].prototype[name] = callback;
+      } else {
+        console.log(
+          "[Component] Warning: the method \"" + k + "\" could not be added to \"" + name + "\""
+        );
+      }
     }
 
   } else if (typeof name !== "string") {
