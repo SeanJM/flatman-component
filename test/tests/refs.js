@@ -15,12 +15,14 @@ module.exports = {
       },
 
       hasRef() {
-        isBoolean = !!(this.refs && this.refs.divi);
+        isBoolean = !!(this.refs && this.refs.divi && this.refs.divi2);
       },
 
       render() {
         return el('div', [
-          el('div', { ref: 'divi' })
+          el('div', { ref: 'divi' }, [
+            el("div", { ref: "divi2" })
+          ])
         ]);
       }
     });

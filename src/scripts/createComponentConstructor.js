@@ -1,3 +1,15 @@
+function getRefs(refs, node) {
+  for (var i = 0, n = node.childNodes.length; i < n; i++) {
+    if (node.childNodes[i].ref && !refs[node.childNodes[i].ref]) {
+      refs[node.childNodes[i].ref] = node.childNodes[i];
+    }
+
+    if (node.childNodes[i].childNodes) {
+      getRefs(refs, node.childNodes[i]);
+    }
+  }
+}
+
 function createComponentConstructor(tagName, methods) {
   var C = function Component(a, b) {
     var props = {};
@@ -40,7 +52,13 @@ function createComponentConstructor(tagName, methods) {
           this.append(children);
         }
 
-        getComponentRefs(this, this.document);
+        for (var i = 0, n = children.length; i < n; i++) {
+          if (children[i].ref) {
+            this.refs[children[i].ref] = children[i];
+          }
+        }
+
+        getRefs(this.refs, this.document);
       } else {
         throw new Error('Invalid component, component must return a node in the render function.');
       }

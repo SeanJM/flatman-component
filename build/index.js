@@ -6,7 +6,6 @@ const out = 'index.js';
 const test = require('./test');
 
 const files = [
-  "getComponentRefs",
   "createComponentMethodProxy",
   "createComponentConstructor",
   "main/Component",
