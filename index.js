@@ -134,62 +134,6 @@ Component.create = function (tagName, methods) {
 };
 
 
-Component.wrap = function wrap(tagName, methods) {
-  var cTemp = el(tagName);
-  var render = methods.render;
-  var constructor = methods.constructor;
-
-  // These are the methods bound the wrapped component, it's contextual 'this'
-  for (var k in cTemp) {
-    if (typeof cTemp[k] === 'function' && !methods[k] && !keyGuard[k]) {
-      methods[k] = wrapMethod(k);
-    }
-  }
-
-  methods.constructor = function (props) {
-    this.component = el(tagName);
-    if (constructor) {
-      constructor.call(this, props);
-    }
-  };
-
-  methods.render = function (props) {
-    return render.call(this, props);
-  };
-
-  return methods;
-};
-
-
-Component.facade = function (methods) {
-  if (Array.isArray(methods)) {
-    methods.forEach(function (method) {
-      if (!Component.prototype[method]) {
-        Component.prototype[method] = Component.facade.method(method);
-      }
-    });
-  } else {
-    throw 'Invalid argument for Component.facade. The argument must be an array of methods.';
-  }
-};
-
-Component.facade.method = function (method) {
-  return function () {
-    var i = 0;
-    var n = arguments.length;
-    var $arguments = new Array(n);
-    var root = this.document;
-    var result;
-
-    for (;i < n; i++) {
-      $arguments[i] = arguments[i];
-    }
-
-    result = root[method].apply(root, $arguments);
-    return typeof result === 'undefined' ? this : result;
-  };
-};
-
 Component.find = function (name) {
   var matches = [];
   for (var k in Component.lib) {

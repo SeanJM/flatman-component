@@ -10,8 +10,6 @@ const files = [
   "createComponentConstructor",
   "main/Component",
   "main/Component.create",
-  "main/Component.wrap",
-  "main/Component.facade",
   "main/Component.find",
   "main/Component.fn",
   "main/Component.off",
