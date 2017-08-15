@@ -58,11 +58,17 @@ function createComponentConstructor(tagName, methods) {
     if (typeof this.render === 'function') {
       this.document = this.render(props);
       this.node = this.document.node;
+
       if (this.document) {
-        getComponentRefs(this, this.document);
+        if (this.document.childNodes.length) {
+          [].push.apply(this.childNodes, this.document.childNodes);
+        }
+
         if (children.length) {
           this.append(children);
         }
+
+        getComponentRefs(this, this.document);
       } else {
         throw new Error('Invalid component, component must return a node in the render function.');
       }
@@ -284,6 +290,7 @@ Component.prototype.after = function (target) {
 Component.prototype.append = function (children) {
   this.document.append(children);
   this.mapChildrenToNode(children);
+  [].push.apply(this.childNodes, children);
   return this;
 };
 
@@ -338,9 +345,8 @@ Component.prototype.mapChildrenToNode = function (children) {
     : [ children ];
 
   for (var i = 0, n = children.length; i < n; i++) {
-    ref = children[i].props && children[i].props.ref;
+    ref = children[i].ref;
     children[i].parentNode = this;
-    this.childNodes.push(children[i]);
     if (ref && !this.refs[ref]) {
       this.refs[ref] = children[i];
     }
@@ -431,8 +437,9 @@ Component.prototype.once = function (names, callback) {
 
 
 Component.prototype.prepend = function (children) {
-  this.mapChildrenToNode(children);
   this.document.prepend(children);
+  this.mapChildrenToNode(children);
+  this.childNodes = [].concat(children).concat(this.childNodes);
   return this;
 };
 

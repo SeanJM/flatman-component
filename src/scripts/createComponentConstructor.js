@@ -30,11 +30,17 @@ function createComponentConstructor(tagName, methods) {
     if (typeof this.render === 'function') {
       this.document = this.render(props);
       this.node = this.document.node;
+
       if (this.document) {
-        getComponentRefs(this, this.document);
+        if (this.document.childNodes.length) {
+          [].push.apply(this.childNodes, this.document.childNodes);
+        }
+
         if (children.length) {
           this.append(children);
         }
+
+        getComponentRefs(this, this.document);
       } else {
         throw new Error('Invalid component, component must return a node in the render function.');
       }
